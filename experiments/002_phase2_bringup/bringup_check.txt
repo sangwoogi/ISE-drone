@@ -1,0 +1,20 @@
+# topics after launch (Wed Oct 14 20:02:42 KST 2026)
+/drone/odom
+/drone/pose
+/drone/vehicle_state
+/fmu/out/vehicle_attitude
+/fmu/out/vehicle_local_position_v1
+/fmu/out/vehicle_status_v1
+# rates
+/drone/vehicle_state   average rate: 20.007
+no data in 8 s
+/drone/pose            average rate: 20.045
+no data in 8 s
+/drone/odom            average rate: 20.055
+no data in 8 s
+# tf
+- Translation: [0.001, -0.018, -0.043]
+- Rotation: in Quaternion (xyzw) [0.000, 0.000, -0.052, 0.999]
+- Rotation: in RPY (radian) [0.000, 0.001, -0.103]
+# actions
+/px4_bridge/flight_command

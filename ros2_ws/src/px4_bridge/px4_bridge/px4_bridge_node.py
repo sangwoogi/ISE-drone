@@ -3,13 +3,16 @@
 Publishes (ENU, frame odom = PX4 local origin):
     /drone/vehicle_state   drone_interfaces/VehicleState   20 Hz
     /drone/pose            geometry_msgs/PoseStamped       20 Hz
-    TF odom -> base_link
+    /drone/odom            nav_msgs/Odometry               20 Hz (pose + linear twist; angular = 0, PX4 does
+                                                            not stream vehicle_angular_velocity by default)
+    TF odom -> base_link   full attitude (FLU->ENU)
 
 Action server:
     /px4_bridge/flight_command   drone_interfaces/action/FlightCommand
         TAKEOFF(height) | LAND | GOTO(target, yaw, use_yaw) | HOVER(duration) | RETURN_HOME
 
-Only one goal runs at a time; a new goal while one is active is rejected. Cancel -> abort (land).
+Only one goal runs at a time; a new goal while one is active is rejected.
+Cancel -> the vehicle holds its current position (stays in OFFBOARD); LAND cannot be cancelled.
 Upper layers (mission_manager) use this action and never touch px4_msgs.
 """
 from __future__ import annotations
@@ -21,6 +24,7 @@ import time
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from geometry_msgs.msg import PoseStamped, TransformStamped
+from nav_msgs.msg import Odometry
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
@@ -30,7 +34,7 @@ from tf2_ros import TransformBroadcaster
 from drone_interfaces.action import FlightCommand
 from drone_interfaces.msg import VehicleState
 
-from .flight_controller import FlightController, FlightError
+from .flight_controller import FlightCancelled, FlightController, FlightError
 
 
 def yaw_to_quat(yaw: float):
@@ -52,6 +56,7 @@ class PX4BridgeNode(Node):
 
         self.pub_state = self.create_publisher(VehicleState, '/drone/vehicle_state', 10)
         self.pub_pose = self.create_publisher(PoseStamped, '/drone/pose', 10)
+        self.pub_odom = self.create_publisher(Odometry, '/drone/odom', 10)
         self.tf_broadcaster = TransformBroadcaster(self)
         self.create_timer(1.0 / float(self.get_parameter('state_rate_hz').value), self._publish_state)
 
@@ -71,16 +76,17 @@ class PX4BridgeNode(Node):
     def _publish_state(self):
         s = self.fc.state
         now = self.get_clock().now().to_msg()
-        q = yaw_to_quat(s.yaw_enu)
+        # full attitude when PX4 streams it (< 1 s old), else yaw-only from heading
+        q = s.orientation_enu if (time.time() - s.attitude_time) < 1.0 else yaw_to_quat(s.yaw_enu)
         msg = VehicleState()
         msg.header.stamp = now
         msg.header.frame_id = self.odom_frame
         msg.armed, msg.in_offboard, msg.landed = s.armed, s.in_offboard, s.landed
         msg.position_valid = s.position_valid
         msg.nav_state = s.nav_state_name
-        msg.pose.position.x, msg.pose.position.y, msg.pose.position.z = s.position_enu
-        msg.pose.orientation.x, msg.pose.orientation.y, msg.pose.orientation.z, msg.pose.orientation.w = q
-        msg.velocity.x, msg.velocity.y, msg.velocity.z = s.velocity_enu
+        msg.pose.position.x, msg.pose.position.y, msg.pose.position.z = (float(v) for v in s.position_enu)
+        msg.pose.orientation.x, msg.pose.orientation.y, msg.pose.orientation.z, msg.pose.orientation.w = (float(v) for v in q)
+        msg.velocity.x, msg.velocity.y, msg.velocity.z = (float(v) for v in s.velocity_enu)
         self.pub_state.publish(msg)
 
         pose = PoseStamped()
@@ -88,12 +94,19 @@ class PX4BridgeNode(Node):
         pose.pose = msg.pose
         self.pub_pose.publish(pose)
 
+        odom = Odometry()
+        odom.header = msg.header
+        odom.child_frame_id = self.base_frame
+        odom.pose.pose = msg.pose
+        odom.twist.twist.linear = msg.velocity          # odom-frame linear velocity (PX4 EKF)
+        self.pub_odom.publish(odom)
+
         if self.get_parameter('publish_tf').value and s.position_valid:
             t = TransformStamped()
             t.header = msg.header
             t.child_frame_id = self.base_frame
-            t.transform.translation.x, t.transform.translation.y, t.transform.translation.z = s.position_enu
-            t.transform.rotation.x, t.transform.rotation.y, t.transform.rotation.z, t.transform.rotation.w = q
+            t.transform.translation.x, t.transform.translation.y, t.transform.translation.z = (float(v) for v in s.position_enu)
+            t.transform.rotation = msg.pose.orientation
             self.tf_broadcaster.sendTransform(t)
 
     # --------------------------------------------------------------- action
@@ -108,7 +121,10 @@ class PX4BridgeNode(Node):
         return GoalResponse.ACCEPT
 
     def _on_cancel(self, goal_handle):
-        self.get_logger().warn('cancel requested -> abort (land)')
+        if goal_handle.request.command == 'LAND':
+            self.get_logger().warn('cancel of LAND rejected (landing cannot be interrupted)')
+            return CancelResponse.REJECT
+        self.get_logger().warn(f'cancel requested for {goal_handle.request.command} -> hold position')
         return CancelResponse.ACCEPT
 
     def _on_progress(self, name, dist, elapsed):
@@ -118,8 +134,6 @@ class PX4BridgeNode(Node):
         fb = FlightCommand.Feedback()
         fb.state, fb.distance_remaining, fb.elapsed = name, float(dist), float(elapsed)
         gh.publish_feedback(fb)
-        if gh.is_cancel_requested:
-            raise FlightError('cancelled by client')
 
     def _execute(self, goal_handle):
         req = goal_handle.request
@@ -127,6 +141,7 @@ class PX4BridgeNode(Node):
             self._active_goal = goal_handle
         result = FlightCommand.Result()
         t0 = time.time()
+        self.fc.cancel_check = lambda: goal_handle.is_cancel_requested   # property, not a method
         try:
             if req.command == 'TAKEOFF':
                 step = self.fc.takeoff(float(req.height))
@@ -142,18 +157,20 @@ class PX4BridgeNode(Node):
             result.success, result.message = True, f'{step.name} ok'
             result.final_error, result.elapsed = float(step.final_error_m), float(step.elapsed_s)
             goal_handle.succeed()
+        except FlightCancelled as e:
+            result.success, result.message = False, str(e)
+            result.elapsed = float(time.time() - t0)
+            goal_handle.canceled()
         except FlightError as e:
             result.success, result.message = False, str(e)
             result.elapsed = float(time.time() - t0)
-            if goal_handle.is_cancel_requested:
-                goal_handle.canceled()
-            else:
-                goal_handle.abort()
+            goal_handle.abort()
             if self.fc.state.armed:
                 self.fc.abort()
         finally:
+            self.fc.cancel_check = None
             p = self.fc.position
-            result.final_position.x, result.final_position.y, result.final_position.z = p
+            result.final_position.x, result.final_position.y, result.final_position.z = (float(v) for v in p)
             with self._goal_lock:
                 self._active_goal = None
         return result

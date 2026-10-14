@@ -8,6 +8,7 @@
       vehicle_status:         /fmu/out/vehicle_status_v1
       vehicle_local_position: /fmu/out/vehicle_local_position_v1
       vehicle_land_detected:  /fmu/out/vehicle_land_detected
+      vehicle_attitude:       /fmu/out/vehicle_attitude
       vehicle_command_ack:    /fmu/out/vehicle_command_ack
       # ROS 2 -> PX4
       offboard_control_mode:  /fmu/in/offboard_control_mode

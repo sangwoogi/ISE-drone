@@ -23,6 +23,7 @@ PX4 ≥ 1.16은 `MESSAGE_VERSION > 0` 인 메시지의 토픽명에 `_v<N>` 접�
 | PX4 → ROS | `/fmu/out/vehicle_status_v1` | `px4_msgs/VehicleStatus` | arming_state, nav_state |
 | PX4 → ROS | `/fmu/out/vehicle_local_position_v1` | `px4_msgs/VehicleLocalPosition` | NED 위치/속도/heading, valid flags |
 | PX4 → ROS | `/fmu/out/vehicle_land_detected` | `px4_msgs/VehicleLandDetected` | landed |
+| PX4 → ROS | `/fmu/out/vehicle_attitude` | `px4_msgs/VehicleAttitude` | q (FRD→NED, w,x,y,z) → ENU/FLU 변환 |
 | PX4 → ROS | `/fmu/out/vehicle_command_ack` | `px4_msgs/VehicleCommandAck` | 명령 수락/거부 |
 | PX4 → ROS | `/fmu/out/vehicle_odometry` | `px4_msgs/VehicleOdometry` | (Phase 3+에서 사용) |
 | ROS → PX4 | `/fmu/in/offboard_control_mode` | `px4_msgs/OffboardControlMode` | offboard heartbeat, `position=true`, 10 Hz |
@@ -56,6 +57,7 @@ PX4 버전이 바뀌면 **이 파일만** 수정한다. `px4_msgs`를 import하�
 
 변환은 `px4_bridge/frames.py` 에서만 수행한다.
 `(E, N, U) ↔ (N, E, D)`, `yaw_ned = π/2 − yaw_enu` (wrap to (−π, π]).
+자세: `q_enu_flu = q_NED→ENU · q_px4(FRD→NED) · q_FLU→FRD`, `q_NED→ENU = (w0, x√½, y√½, z0)`, `q_FLU→FRD = (0,1,0,0)`; 결과는 (x,y,z,w)로 발행.
 
 Phase 1의 위치 기준은 PX4 local origin(시뮬레이션 시작점)이다. TF(`map/odom/base_link`)는 Phase 2~3에서 정의한다.
 
@@ -104,7 +106,8 @@ Phase 2에서 bridge 노드/RViz를 추가한다.
 | `/camera/color/camera_info` | sensor_msgs/CameraInfo | sensor_adapter | mapper, SLAM | |
 | `/sensor_adapter/skew_ms` | std_msgs/Float32 | sensor_adapter | 평가 | depth−color 타임스탬프 차 |
 | `/drone/vehicle_state` | drone_interfaces/VehicleState | px4_bridge | mission_manager, 평가 | 20 Hz, ENU, frame `odom` |
-| `/drone/pose` | geometry_msgs/PoseStamped | px4_bridge | RViz | |
+| `/drone/pose` | geometry_msgs/PoseStamped | px4_bridge | RViz | 전체 자세(FLU→ENU 쿼터니언) |
+| `/drone/odom` | nav_msgs/Odometry | px4_bridge | SLAM(Phase 4), 평가 | frame odom, child base_link, 선속도 포함, 각속도 0 (PX4가 vehicle_angular_velocity를 기본 발행하지 않음) |
 | `/ground_truth/pose` | geometry_msgs/PoseStamped | drone_slam/gt_pose_node | **평가 전용** | frame `map_gt` |
 | `/slam/odom` | nav_msgs/Odometry | RTAB-Map(옵션) | | V1은 PX4 odom 사용 |
 | `/slam/map` | nav_msgs/OccupancyGrid | RTAB-Map | exploration | |
@@ -123,7 +126,7 @@ Phase 2에서 bridge 노드/RViz를 추가한다.
 
 | 이름 | 타입 | 서버 | 설명 |
 |---|---|---|---|
-| `/px4_bridge/flight_command` | action `FlightCommand` | px4_bridge | TAKEOFF/LAND/GOTO/HOVER/RETURN_HOME, 동시 1개, cancel→abort |
+| `/px4_bridge/flight_command` | action `FlightCommand` | px4_bridge | TAKEOFF/LAND/GOTO/HOVER/RETURN_HOME, 동시 1개. **cancel → 현재 위치 호버 유지**(OFFBOARD 유지, 결과 CANCELED), LAND는 cancel 거부 |
 | `/mission/execute` | action `Mission` | mission_manager | 상태기계가 허용하는 action만 수락, GOTO_OBJECT는 DB 조회+안전 검증 |
 | `/semantic_database/query` | srv `QueryObjects` | semantic_database | class/near_object/near_point+radius/min_confidence |
 | `/llm/ask` | srv `AskLLM` | llm_interface | DB 도구 호출로만 답변, tool_calls 로그 반환 |

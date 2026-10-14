@@ -11,7 +11,8 @@ PX4 + Gazebo Harmonic + ROS 2 Jazzy 기반 실내 자율 Semantic Exploration �
 | 0 | 개발 환경 (Ubuntu 24.04 / ROS 2 Jazzy / Gazebo Harmonic / PX4 v1.17.0 / uXRCE-DDS) | **완료** — `experiments/000_phase0_env/` |
 | 1 | PX4 + Gazebo 비행: `takeoff / hover / goto / return_home / land`, 10회 연속 시퀀스 | **완료** (10/10, failsafe OK, gz_x500_depth OK) — `experiments/001_phase1_flight/` |
 | — | 전 Phase 베이스라인 골격 (계약·스텁 노드·launch, 전체 체인 스모크 통과) | **완료** — `docs/phases/baseline.md` |
-| 2+ | ROS 2 bringup, sensor adapter, SLAM, YOLO, Semantic Map, LLM, Mission Manager (실구현) | 예정 |
+| 2 | ROS 2 bringup: 단일 launch(PX4·Gazebo·Agent·Bridge·RViz), FlightCommand 액션 5/5, cancel→hold, `/drone/odom` | **완료** — `experiments/002_phase2_bringup/` |
+| 3+ | sensor adapter, SLAM, YOLO, Semantic Map, LLM, Mission Manager (실구현) | 예정 |
 
 ## 저장소 구조
 
@@ -83,6 +84,7 @@ python3 tests/simulation/test_failsafe.py
 
 # 위 전부를 한 번에 (SITL headless 자동 기동/종료)
 scripts/run_phase1_test.sh 10
+scripts/run_phase2_test.sh 5          # Phase 2: 액션 경로 5회 + cancel→hold
 ```
 
 ## Mission API

@@ -30,6 +30,10 @@ class FlightError(RuntimeError):
     """Raised when a flight primitive cannot be completed safely."""
 
 
+class FlightCancelled(FlightError):
+    """Raised when the caller cancelled the primitive; the vehicle is left hovering in place."""
+
+
 @dataclass
 class FlightParams:
     stream_rate_hz: float = 10.0
@@ -186,6 +190,7 @@ class FlightController:
         while time.time() - t0 < duration:
             s = self.px4.state
             self._assert_offboard_armed(s, 'hover')
+            self._check_cancel('hover')
             max_err = max(max_err, distance(s.position_enu, target))
             time.sleep(0.05)
         final = distance(self.px4.state.position_enu, target)
@@ -251,6 +256,20 @@ class FlightController:
 
     # Optional callback(name, distance_remaining_m, elapsed_s) used by px4_bridge_node for action feedback.
     progress_cb = None
+    # Optional callable() -> bool polled by the blocking primitives; True aborts the primitive with
+    # FlightCancelled after re-targeting the stream to the current position (hover in place).
+    cancel_check = None
+
+    def _check_cancel(self, what: str) -> None:
+        if self.cancel_check is not None and self.cancel_check():
+            held = self.px4.hold_current_position()
+            self.log.warn(f'{what}: cancelled -> holding at {self._fmt(held)}')
+            raise FlightCancelled(f'{what}: cancelled by client, holding position')
+
+    def hold(self) -> Vec3:
+        """Hover at the current position (keeps OFFBOARD). Returns the held position."""
+        self._require_flying('hold')
+        return self.px4.hold_current_position()
 
     def _wait_reached(self, name: str, target: Vec3, timeout: float) -> StepResult:
         t0 = time.time()
@@ -261,6 +280,7 @@ class FlightController:
         while time.time() - t0 < timeout:
             s = self.px4.state
             self._assert_offboard_armed(s, name)
+            self._check_cancel(name)
             err = distance(s.position_enu, target)
             max_err = max(max_err, err)
             if self.progress_cb and time.time() - last_fb > 0.2:

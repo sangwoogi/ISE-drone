@@ -18,6 +18,7 @@ from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile, ReliabilityPo
 from px4_msgs.msg import (
     OffboardControlMode,
     TrajectorySetpoint,
+    VehicleAttitude,
     VehicleCommand,
     VehicleCommandAck,
     VehicleLandDetected,
@@ -42,6 +43,7 @@ DEFAULT_TOPICS = {
     'vehicle_status': '/fmu/out/vehicle_status_v1',
     'vehicle_local_position': '/fmu/out/vehicle_local_position_v1',
     'vehicle_land_detected': '/fmu/out/vehicle_land_detected',
+    'vehicle_attitude': '/fmu/out/vehicle_attitude',
     'vehicle_command_ack': '/fmu/out/vehicle_command_ack',
     'offboard_control_mode': '/fmu/in/offboard_control_mode',
     'trajectory_setpoint': '/fmu/in/trajectory_setpoint',
@@ -90,6 +92,8 @@ class VehicleState:
     position_enu: Vec3 = (0.0, 0.0, 0.0)
     velocity_enu: Vec3 = (0.0, 0.0, 0.0)
     yaw_enu: float = 0.0
+    orientation_enu: tuple = (0.0, 0.0, 0.0, 1.0)   # (x, y, z, w) body FLU -> odom ENU
+    attitude_time: float = 0.0
     landed: bool = True
     acks: dict = field(default_factory=dict)   # command id -> (result, wall time)
 
@@ -130,6 +134,7 @@ class PX4Interface:
         node.create_subscription(VehicleStatus, t['vehicle_status'], self._on_status, QOS_PX4_OUT)
         node.create_subscription(VehicleLocalPosition, t['vehicle_local_position'], self._on_local_position, QOS_PX4_OUT)
         node.create_subscription(VehicleLandDetected, t['vehicle_land_detected'], self._on_land_detected, QOS_PX4_OUT)
+        node.create_subscription(VehicleAttitude, t['vehicle_attitude'], self._on_attitude, QOS_PX4_OUT)
         node.create_subscription(VehicleCommandAck, t['vehicle_command_ack'], self._on_ack, QOS_PX4_OUT)
 
         # Steady clock: the heartbeat cadence must not stall when the wall clock is stepped
@@ -166,6 +171,11 @@ class PX4Interface:
             self._state.velocity_enu = frames.ned_to_enu((float(msg.vx), float(msg.vy), float(msg.vz)))
             self._state.yaw_enu = frames.yaw_ned_to_enu(float(msg.heading))
 
+    def _on_attitude(self, msg: VehicleAttitude) -> None:
+        with self._lock:
+            self._state.attitude_time = time.time()
+            self._state.orientation_enu = frames.quat_ned_frd_to_enu_flu(tuple(msg.q))
+
     def _on_land_detected(self, msg: VehicleLandDetected) -> None:
         with self._lock:
             self._state.landed = bool(msg.landed)
@@ -188,6 +198,12 @@ class PX4Interface:
         with self._lock:
             self._sp_ned = frames.enu_to_ned(position_enu)
             self._sp_yaw_ned = frames.yaw_enu_to_ned(yaw_enu) if yaw_enu is not None else float('nan')
+
+    def hold_current_position(self) -> Vec3:
+        """Re-target the stream to where the vehicle is now (used for cancel -> hover). Returns the new setpoint."""
+        s = self.state
+        self.set_setpoint_enu(s.position_enu, s.yaw_enu)
+        return s.position_enu
 
     def setpoint_enu(self) -> Vec3:
         with self._lock:

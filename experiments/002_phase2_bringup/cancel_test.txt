@@ -1,0 +1,1 @@
+20261014_200303 status=CANCELED drift_after_3s=0.38 armed=True nav=OFFBOARD result=PASS

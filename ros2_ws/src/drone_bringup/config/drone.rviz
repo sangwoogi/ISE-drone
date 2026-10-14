@@ -1,74 +1,156 @@
 Panels:
   - Class: rviz_common/Displays
     Name: Displays
+    Property Tree Widget:
+      Expanded: ~
+    Tree Height: 500
   - Class: rviz_common/Views
     Name: Views
 Visualization Manager:
   Class: ""
   Displays:
     - Class: rviz_default_plugins/Grid
+      Enabled: true
       Name: Grid
+      Cell Size: 1
       Plane Cell Count: 20
       Reference Frame: map
       Value: true
     - Class: rviz_default_plugins/TF
+      Enabled: true
       Name: TF
+      Show Arrows: true
+      Show Axes: true
       Show Names: true
+      Marker Scale: 0.8
+      Update Interval: 0
       Value: true
     - Class: rviz_default_plugins/Pose
+      Enabled: true
       Name: Drone pose
-      Topic:
-        Value: /drone/pose
       Shape: Arrow
       Color: 255; 85; 0
+      Alpha: 1
+      Axes Length: 0.5
+      Axes Radius: 0.05
+      Head Length: 0.2
+      Head Radius: 0.1
+      Shaft Length: 0.4
+      Shaft Radius: 0.04
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /drone/pose
+      Value: true
+    - Class: rviz_default_plugins/Odometry
+      Enabled: true
+      Name: Drone odom trail
+      Keep: 200
+      Position Tolerance: 0.1
+      Angle Tolerance: 0.1
+      Shape:
+        Value: Arrow
+        Alpha: 0.6
+        Color: 0; 170; 255
+        Head Length: 0.1
+        Head Radius: 0.05
+        Shaft Length: 0.2
+        Shaft Radius: 0.02
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /drone/odom
       Value: true
     - Class: rviz_default_plugins/Image
+      Enabled: true
       Name: Color
+      Normalize Range: true
       Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
         Value: /camera/color/image_raw
       Value: true
     - Class: rviz_default_plugins/Image
+      Enabled: true
       Name: Detections
+      Normalize Range: true
       Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
         Value: /perception/detections_image
       Value: true
-    - Class: rviz_default_plugins/Image
-      Name: Depth
-      Topic:
-        Value: /camera/depth/image_raw
-      Value: false
     - Class: rviz_default_plugins/PointCloud2
+      Enabled: true
       Name: SLAM cloud
-      Topic:
-        Value: /slam/pointcloud
       Size (m): 0.03
+      Style: Flat Squares
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /slam/pointcloud
       Value: true
     - Class: rviz_default_plugins/Map
+      Enabled: true
       Name: SLAM grid
+      Alpha: 0.7
       Topic:
+        Depth: 5
+        Durability Policy: Transient Local
+        History Policy: Keep Last
+        Reliability Policy: Reliable
         Value: /slam/map
       Value: true
     - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
       Name: Semantic objects
       Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
         Value: /semantic_map/markers
       Value: true
+  Enabled: true
   Global Options:
+    Background Color: 48; 48; 48
     Fixed Frame: map
     Frame Rate: 30
+  Name: root
   Tools:
+    - Class: rviz_default_plugins/Interact
     - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
+  Value: true
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 12
-      Focal Point:
-        X: 2
-        Y: 0
-        Z: 0.5
-      Pitch: 0.6
-      Yaw: 3.9
       Name: Current View
+      Distance: 8
+      Focal Point:
+        X: 1
+        Y: 0.5
+        Z: 0.8
+      Pitch: 0.45
+      Yaw: 4.0
+      Near Clip Distance: 0.01
+      Target Frame: <Fixed Frame>
+    Saved: ~
 Window Geometry:
   Height: 900
   Width: 1400
+  Hide Left Dock: false
+  Hide Right Dock: true

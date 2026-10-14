@@ -14,9 +14,14 @@ import sys
 
 
 def load(path):
+    """Phase 1 trajectories (with setpoint columns) or Phase 2 telemetry (without)."""
     with open(path) as f:
         rows = list(csv.DictReader(f))
-    cols = {k: [float(r[k]) for r in rows] for k in ('t', 'x', 'y', 'z', 'sp_x', 'sp_y', 'sp_z')}
+    t0 = float(rows[0]['t']) if rows else 0.0
+    cols = {k: [float(r[k]) for r in rows] for k in ('x', 'y', 'z')}
+    cols['t'] = [float(r['t']) - t0 for r in rows]
+    for k in ('sp_x', 'sp_y', 'sp_z'):
+        cols[k] = [float(r[k]) for r in rows] if rows and k in rows[0] else [float('nan')] * len(rows)
     cols['nav_state'] = [r['nav_state'] for r in rows]
     return cols
 
@@ -32,13 +37,17 @@ def main(argv=None) -> int:
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
 
-    files = sorted(glob.glob(os.path.join(args.exp_dir, 'trajectories', '*.csv')))
+    files = sorted(glob.glob(os.path.join(args.exp_dir, 'trajectories', '*.csv'))) or \
+        sorted(glob.glob(os.path.join(args.exp_dir, 'telemetry_*.csv')))
     if not files:
         print('no trajectory CSVs found', file=sys.stderr)
         return 1
 
     if args.run:
         files = [f for f in files if f.endswith(f'run{args.run:02d}.csv')][-1:]
+        if not files:
+            print('run not found', file=sys.stderr)
+            return 1
         d = load(files[0])
         fig, axes = plt.subplots(3, 1, figsize=(9, 8), sharex=True)
         for ax, k in zip(axes, 'xyz'):
@@ -48,7 +57,7 @@ def main(argv=None) -> int:
             ax.grid(alpha=0.3)
             ax.legend(loc='upper right')
         axes[-1].set_xlabel('t [s]')
-        fig.suptitle(f'Phase 1 run {args.run}: {os.path.basename(files[0])}')
+        fig.suptitle(f'run {args.run}: {os.path.basename(files[0])}')
         out = args.out or os.path.join(args.exp_dir, f'run{args.run:02d}.png')
     else:
         fig, axes = plt.subplots(1, 2, figsize=(13, 5.5))
@@ -64,7 +73,7 @@ def main(argv=None) -> int:
         axes[0].set_title('Top-down path'); axes[0].grid(alpha=0.3)
         axes[1].set_xlabel('t [s]'); axes[1].set_ylabel('z Up [m]'); axes[1].set_title('Altitude'); axes[1].grid(alpha=0.3)
         axes[1].legend(fontsize=7, ncol=2)
-        fig.suptitle(f'Phase 1 flight sequence - {len(files)} runs')
+        fig.suptitle(f'{os.path.basename(os.path.normpath(args.exp_dir))} - {len(files)} runs')
         out = args.out or os.path.join(args.exp_dir, 'summary.png')
     fig.tight_layout()
     fig.savefig(out, dpi=130)

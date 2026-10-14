@@ -1,0 +1,51 @@
+telemetry ok (4 VehicleState msgs), action server ready
+
+===== run 1/5 =====
+  takeoff  SUCCEEDED   12.2s  takeoff ok
+  hover    SUCCEEDED    5.1s  hover ok
+  goto     SUCCEEDED    8.2s  goto ok
+  hover2   SUCCEEDED    2.0s  hover ok
+  return   SUCCEEDED    4.3s  return_home ok
+  land     SUCCEEDED    7.8s  land ok
+run 1: PASS (39.5s)
+
+===== run 2/5 =====
+  takeoff  SUCCEEDED   12.3s  takeoff ok
+  hover    SUCCEEDED    5.0s  hover ok
+  goto     SUCCEEDED    5.9s  goto ok
+  hover2   SUCCEEDED    2.0s  hover ok
+  return   SUCCEEDED    3.8s  return_home ok
+  land     SUCCEEDED    9.6s  land ok
+run 2: PASS (38.6s)
+
+===== run 3/5 =====
+  takeoff  SUCCEEDED   14.0s  takeoff ok
+  hover    SUCCEEDED    5.1s  hover ok
+  goto     SUCCEEDED    5.8s  goto ok
+  hover2   SUCCEEDED    2.1s  hover ok
+  return   SUCCEEDED    4.8s  return_home ok
+  land     SUCCEEDED    9.2s  land ok
+run 3: PASS (41.1s)
+
+===== run 4/5 =====
+  takeoff  SUCCEEDED   14.2s  takeoff ok
+  hover    SUCCEEDED    5.0s  hover ok
+  goto     SUCCEEDED    5.0s  goto ok
+  hover2   SUCCEEDED    2.1s  hover ok
+  return   SUCCEEDED    2.5s  return_home ok
+  land     SUCCEEDED    9.3s  land ok
+run 4: PASS (38.1s)
+
+===== run 5/5 =====
+  takeoff  SUCCEEDED   14.8s  takeoff ok
+  hover    SUCCEEDED    5.1s  hover ok
+  goto     SUCCEEDED    5.6s  goto ok
+  hover2   SUCCEEDED    2.1s  hover ok
+  return   SUCCEEDED    4.9s  return_home ok
+  land     SUCCEEDED    9.3s  land ok
+run 5: PASS (41.7s)
+
+===== cancel -> hold test =====
+  goto cancelled after 1.5 s: status=CANCELED drift_3s=0.38 m armed=True nav=OFFBOARD -> PASS
+
+===== 5/5 runs passed; cancel test: True =====
