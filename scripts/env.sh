@@ -13,6 +13,12 @@ export ISE_DRONE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export PX4_DIR="${PX4_DIR:-$HOME/PX4-Autopilot}"
 export ROS_WS="$ISE_DRONE_ROOT/ros2_ws"
 
+# --- python: ignore ~/.local user-site packages -------------------------------
+# User-site numpy 2.x shadows the system numpy 1.26 that python3-opencv / cv_bridge are built against
+# ("numpy.core.multiarray failed to import"). ROS nodes must see only apt-installed python packages.
+# (PX4's own build uses pip --user packages, but it is driven by scripts/setup/02_px4.sh, not this shell.)
+export PYTHONNOUSERSITE=1
+
 # --- ROS 2 -------------------------------------------------------------------
 export ROS_DISTRO="${ROS_DISTRO:-jazzy}"
 if [ -f "/opt/ros/$ROS_DISTRO/setup.bash" ]; then

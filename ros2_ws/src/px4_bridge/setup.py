@@ -20,10 +20,10 @@ setup(
     maintainer_email='drknu12@gmail.com',
     description='PX4 uXRCE-DDS bridge exposing a stable flight API (Phase 1).',
     license='MIT',
-    tests_require=['pytest'],
     entry_points={
         'console_scripts': [
             'flight_demo = px4_bridge.flight_demo_node:main',
+            'px4_bridge_node = px4_bridge.px4_bridge_node:main',
         ],
     },
 )

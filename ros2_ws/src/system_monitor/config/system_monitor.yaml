@@ -1,0 +1,5 @@
+/**:
+  ros__parameters:
+    rate_hz: 1.0
+    csv_path: ""                       # e.g. experiments/001_pc_baseline/metrics.csv ("" = no CSV)
+    watch_topics: [/camera/color/image_raw, /perception/detections_2d, /semantic_map/objects, /drone/vehicle_state]

@@ -1,0 +1,7 @@
+# Natural-language question about the semantic map (Phase 7). The answer is grounded in the DB only.
+string question
+---
+bool success
+string answer                   # natural language reply
+string structured_command       # JSON, e.g. {"action":"go_to_object","target":"bag_01"} or "" (Phase 8)
+string[] tool_calls             # tool calls the LLM made, for logging/eval

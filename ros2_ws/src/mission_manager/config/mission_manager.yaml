@@ -1,0 +1,10 @@
+/**:
+  ros__parameters:
+    min_altitude_m: 0.5
+    max_altitude_m: 3.0
+    max_distance_from_home_m: 15.0
+    min_object_confidence: 0.5
+    object_standoff_m: 1.0
+    object_hover_altitude_m: 1.2
+    default_takeoff_height_m: 1.2
+    status_rate_hz: 5.0

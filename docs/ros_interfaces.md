@@ -1,7 +1,7 @@
-# ROS 2 Interface Contract — Phase 1 (PX4 flight layer)
+# ROS 2 Interface Contract
 
-이 문서는 Phase 1에서 **고정**한 토픽, QoS, 좌표계, Mission API를 기록한다.
-이후 Phase에서 추가되는 인터페이스는 이 파일에 절을 늘려 기록한다.
+§1–5: Phase 1에서 **고정**한 PX4 비행 계층. §6: 베이스라인에서 정의한 전 Phase 공통 계약(`drone_interfaces`).
+인터페이스를 바꿀 때는 이 문서와 `drone_interfaces`를 함께 수정한다.
 
 ## 1. 버전 고정
 
@@ -92,3 +92,50 @@ Phase 2에서 bridge 노드/RViz를 추가한다.
 |---|---|---|
 | `NAV_DLL_ACT` | 0 | gz_x500 기체 기본값 2(datalink loss → RTL)는 GCS 미연결을 **pre-arm 실패**로 만든다. 자동 테스트는 QGC 없이 돌므로 끈다. 실기체에서는 다시 켠다. |
 | `COM_OF_LOSS_T` | 3 | offboard 신호 손실 판정 시간[s] (기본 1). WSL2에서는 wall clock이 ~10초마다 최대 0.8초 역행하고, PX4는 수신 timestamp를 XRCE timesync 오프셋으로 변환하므로 1초 기준에서는 정상 스트림이 '손실'로 보여 RTL failsafe가 발생했다(`failsafe_flags.offboard_control_signal_lost`로 확인). 실기체(Pi, 안정적 시계)에서는 기본값으로 되돌린다. |
+
+## 6. 전체 스택 계약 (baseline)
+
+### 6.1 토픽
+
+| 토픽 | 타입 | 발행 | 구독 | 비고 |
+|---|---|---|---|---|
+| `/camera/color/image_raw` | sensor_msgs/Image | sensor_adapter | detector, SLAM | frame `camera_optical_frame`, sensor QoS |
+| `/camera/depth/image_raw` | sensor_msgs/Image | sensor_adapter | mapper, SLAM | 32FC1 m 또는 16UC1 mm |
+| `/camera/color/camera_info` | sensor_msgs/CameraInfo | sensor_adapter | mapper, SLAM | |
+| `/sensor_adapter/skew_ms` | std_msgs/Float32 | sensor_adapter | 평가 | depth−color 타임스탬프 차 |
+| `/drone/vehicle_state` | drone_interfaces/VehicleState | px4_bridge | mission_manager, 평가 | 20 Hz, ENU, frame `odom` |
+| `/drone/pose` | geometry_msgs/PoseStamped | px4_bridge | RViz | |
+| `/ground_truth/pose` | geometry_msgs/PoseStamped | drone_slam/gt_pose_node | **평가 전용** | frame `map_gt` |
+| `/slam/odom` | nav_msgs/Odometry | RTAB-Map(옵션) | | V1은 PX4 odom 사용 |
+| `/slam/map` | nav_msgs/OccupancyGrid | RTAB-Map | exploration | |
+| `/slam/pointcloud` | sensor_msgs/PointCloud2 | RTAB-Map | RViz | |
+| `/perception/detections_2d` | vision_msgs/Detection2DArray | object_detector | tracker | class_id=string, score |
+| `/perception/detections_image` | sensor_msgs/Image | object_detector | RViz | 디버그 |
+| `/perception/tracks` | vision_msgs/Detection2DArray | object_tracker | semantic_mapper | `id = class#track` |
+| `/perception/objects_3d` | drone_interfaces/SemanticObjectArray | semantic_mapper | 평가 | 프레임별 3D 관측 |
+| `/semantic_map/objects` | drone_interfaces/SemanticObjectArray | semantic_mapper | semantic_database | 확정 객체(관측 ≥ N), 2 Hz |
+| `/semantic_map/markers` | visualization_msgs/MarkerArray | semantic_mapper | RViz | |
+| `/exploration/goal` | geometry_msgs/PoseStamped | exploration | mission_manager | frontier 목표 |
+| `/mission/status` | drone_interfaces/MissionStatus | mission_manager | UI/LLM | 5 Hz |
+| `/diagnostics` | diagnostic_msgs/DiagnosticArray | system_monitor | | CPU/RAM/온도/토픽 Hz |
+
+### 6.2 서비스 / 액션
+
+| 이름 | 타입 | 서버 | 설명 |
+|---|---|---|---|
+| `/px4_bridge/flight_command` | action `FlightCommand` | px4_bridge | TAKEOFF/LAND/GOTO/HOVER/RETURN_HOME, 동시 1개, cancel→abort |
+| `/mission/execute` | action `Mission` | mission_manager | 상태기계가 허용하는 action만 수락, GOTO_OBJECT는 DB 조회+안전 검증 |
+| `/semantic_database/query` | srv `QueryObjects` | semantic_database | class/near_object/near_point+radius/min_confidence |
+| `/llm/ask` | srv `AskLLM` | llm_interface | DB 도구 호출로만 답변, tool_calls 로그 반환 |
+
+### 6.3 TF 트리
+
+```
+map ──(SLAM, Phase 4; 그 전엔 static identity)──▶ odom ──(px4_bridge)──▶ base_link ──(static)──▶ camera_link ──(static)──▶ camera_optical_frame
+map_gt (ground truth, 평가 전용, 트리에 연결하지 않음)
+```
+
+### 6.4 Semantic object 표현
+`SemanticObject{id, class_name, position(map), size, confidence, first_seen, last_seen, observation_count, relations[]}`.
+`relations` 문자열 형식 `"<relation>:<object_id>"`, V1 relation = near / left_of / right_of / in_front_of / behind.
+SQLite 테이블: `objects`, `relations`, `observations` (`semantic_database/db.py`).

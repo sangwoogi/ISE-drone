@@ -1,0 +1,16 @@
+/**:
+  ros__parameters:
+    detections_topic: /perception/tracks          # or /perception/detections_2d when no tracker
+    depth_topic: /camera/depth/image_raw
+    camera_info_topic: /camera/color/camera_info
+    map_frame: map
+    camera_frame: ""                                # "" = use detections header.frame_id (camera_optical_frame)
+    sync_slop_s: 0.15
+    association_distance_m: 0.5
+    position_alpha: 0.3
+    min_observations: 3
+    min_confidence: 0.4
+    depth_min_m: 0.2
+    depth_max_m: 8.0
+    publish_rate_hz: 2.0
+    near_threshold_m: 1.5

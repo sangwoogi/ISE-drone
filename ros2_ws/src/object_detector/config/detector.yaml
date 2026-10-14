@@ -1,0 +1,13 @@
+/**:
+  ros__parameters:
+    backend: mock              # mock | ultralytics | onnx
+    model: yolov8n.pt
+    device: cuda:0
+    confidence: 0.4
+    imgsz: 640
+    classes: [person, chair, couch, bed, dining table, tv, backpack, bottle, book, laptop]
+    input_topic: /camera/color/image_raw
+    output_topic: /perception/detections_2d
+    publish_debug_image: true
+    debug_image_topic: /perception/detections_image
+    max_rate_hz: 10.0

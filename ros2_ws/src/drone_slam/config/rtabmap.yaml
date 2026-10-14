@@ -1,0 +1,20 @@
+# RTAB-Map RGB-D parameters (Phase 4 baseline). Tune after first baseline run.
+/**:
+  ros__parameters:
+    frame_id: base_link
+    odom_frame_id: odom
+    map_frame_id: map
+    subscribe_depth: true
+    subscribe_rgb: true
+    approx_sync: true
+    queue_size: 10
+    qos_image: 2            # sensor data (best effort)
+    qos_camera_info: 2
+    # RTAB-Map core params are strings
+    "Rtabmap/DetectionRate": "2"
+    "RGBD/NeighborLinkRefining": "true"
+    "RGBD/ProximityBySpace": "true"
+    "Reg/Force3DoF": "false"
+    "Grid/FromDepth": "true"
+    "Grid/RangeMax": "5.0"
+    "Grid/3D": "true"

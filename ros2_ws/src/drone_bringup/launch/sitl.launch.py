@@ -50,11 +50,12 @@ def _setup(context, *args, **kwargs):
     # Parameter overrides are applied AFTER boot through the px4-param daemon client.
     # (PX4_PARAM_* env vars are applied before the airframe file, whose `param set-default`
     #  silently overrides any value equal to the compiled default - e.g. NAV_DLL_ACT=0.)
-    param_cmds = []
+    param_cmds, param_pairs = [], []
     for item in [x.strip() for x in px4_params.split(',') if x.strip()]:
         name, _, value = item.partition('=')
         if not value:
             raise RuntimeError(f'px4_params entry "{item}" must be NAME=VALUE')
+        param_pairs.append((name.strip(), value.strip()))
         param_cmds.append(f'{px4_param_bin} set {name.strip()} {value.strip()}')
 
     px4 = ExecuteProcess(
@@ -77,10 +78,14 @@ def _setup(context, *args, **kwargs):
         px4,
     ]
     if param_cmds:
-        # Wait until the daemon answers (`px4-param show` succeeds), then apply every override.
-        script = (f'for i in $(seq 1 60); do {px4_param_bin} show -q SYS_AUTOSTART >/dev/null 2>&1 && break; sleep 1; done; '
-                  + ' && '.join(param_cmds)
-                  + ' && echo "[sitl.launch] applied px4_params: ' + px4_params + '"')
+        # The daemon socket answers while rcS is still running; the airframe file's `param set-default`
+        # would then overwrite our values. Wait for the logger (started last in rcS), apply, verify, repeat.
+        px4_logger_bin = os.path.join(px4_dir, 'build', 'px4_sitl_default', 'bin', 'px4-logger')
+        verify = ' && '.join(f'{px4_param_bin} compare -s {name} {value}' for name, value in param_pairs)
+        script = (f'for i in $(seq 1 90); do {px4_logger_bin} status >/dev/null 2>&1 && break; sleep 1; done; sleep 2; '
+                  f'for i in $(seq 1 10); do {" && ".join(param_cmds)} >/dev/null; sleep 1; '
+                  f'if {verify}; then echo "[sitl.launch] applied px4_params: {px4_params}"; exit 0; fi; done; '
+                  f'echo "[sitl.launch] ERROR: px4_params not applied"; exit 1')
         actions.append(ExecuteProcess(
             cmd=['bash', '-c', script],
             cwd=rootfs,                     # px4-param finds the daemon socket relative to cwd

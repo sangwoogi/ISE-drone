@@ -1,0 +1,13 @@
+# High-level mission step validated and sequenced by mission_manager (Phase 8).
+string action                   # TAKEOFF | LAND | HOVER | GOTO | RETURN_HOME | GOTO_OBJECT | LOOK_AT_OBJECT | EXPLORE | SEARCH_OBJECT
+string target_id                # GOTO_OBJECT / LOOK_AT_OBJECT / SEARCH_OBJECT: semantic object id or class name
+geometry_msgs/Point target      # GOTO: map-frame position [m]
+float32 param                   # TAKEOFF height / HOVER seconds / EXPLORE time budget
+---
+bool success
+string message
+string final_state
+---
+string state
+string message
+float32 progress

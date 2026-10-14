@@ -1,0 +1,74 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Plane Cell Count: 20
+      Reference Frame: map
+      Value: true
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Show Names: true
+      Value: true
+    - Class: rviz_default_plugins/Pose
+      Name: Drone pose
+      Topic:
+        Value: /drone/pose
+      Shape: Arrow
+      Color: 255; 85; 0
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Name: Color
+      Topic:
+        Value: /camera/color/image_raw
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Name: Detections
+      Topic:
+        Value: /perception/detections_image
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Name: Depth
+      Topic:
+        Value: /camera/depth/image_raw
+      Value: false
+    - Class: rviz_default_plugins/PointCloud2
+      Name: SLAM cloud
+      Topic:
+        Value: /slam/pointcloud
+      Size (m): 0.03
+      Value: true
+    - Class: rviz_default_plugins/Map
+      Name: SLAM grid
+      Topic:
+        Value: /slam/map
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Semantic objects
+      Topic:
+        Value: /semantic_map/markers
+      Value: true
+  Global Options:
+    Fixed Frame: map
+    Frame Rate: 30
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 12
+      Focal Point:
+        X: 2
+        Y: 0
+        Z: 0.5
+      Pitch: 0.6
+      Yaw: 3.9
+      Name: Current View
+Window Geometry:
+  Height: 900
+  Width: 1400

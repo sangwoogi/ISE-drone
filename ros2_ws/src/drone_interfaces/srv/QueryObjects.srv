@@ -1,0 +1,10 @@
+# Query the semantic database. Empty fields are wildcards.
+string class_name               # filter by class ("" = any)
+string near_object_id           # return objects within `radius` of this object ("" = no spatial filter)
+geometry_msgs/Point near_point  # alternative spatial filter centre (used when near_object_id == "")
+float32 radius                  # [m], 0 = no spatial filter
+float32 min_confidence          # 0 = no filter
+---
+bool success
+string message
+SemanticObject[] objects

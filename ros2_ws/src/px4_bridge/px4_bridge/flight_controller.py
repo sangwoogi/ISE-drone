@@ -60,7 +60,8 @@ class FlightController:
     """High-level, blocking flight API on top of PX4Interface."""
 
     def __init__(self, node: Optional[Node] = None, node_name: str = 'px4_bridge',
-                 params: Optional[FlightParams] = None):
+                 params: Optional[FlightParams] = None, spin: bool = True):
+        """spin=False: the caller spins `node` itself (e.g. a MultiThreadedExecutor in px4_bridge_node)."""
         self._own_node = node is None
         self.node = node or Node(node_name)
         self.params = params or self._declare_params(self.node)
@@ -71,10 +72,13 @@ class FlightController:
         self.home_enu: Optional[Vec3] = None
         self.home_yaw: Optional[float] = None
 
-        self._executor = SingleThreadedExecutor()
-        self._executor.add_node(self.node)
-        self._spin_thread = threading.Thread(target=self._executor.spin, name='px4_bridge_spin', daemon=True)
-        self._spin_thread.start()
+        self._executor = None
+        self._spin_thread = None
+        if spin:
+            self._executor = SingleThreadedExecutor()
+            self._executor.add_node(self.node)
+            self._spin_thread = threading.Thread(target=self._executor.spin, name='px4_bridge_spin', daemon=True)
+            self._spin_thread.start()
 
     # ------------------------------------------------------------- parameters
     @staticmethod
@@ -106,9 +110,10 @@ class FlightController:
     def shutdown(self) -> None:
         """Stop streaming, stop the spin thread, then destroy the node (in that order)."""
         self.px4.stop_stream()
-        self._executor.shutdown(timeout_sec=2.0)
-        self._spin_thread.join(timeout=3.0)
-        self._executor.remove_node(self.node)
+        if self._executor is not None:
+            self._executor.shutdown(timeout_sec=2.0)
+            self._spin_thread.join(timeout=3.0)
+            self._executor.remove_node(self.node)
         if self._own_node:
             self.node.destroy_node()
 
@@ -244,8 +249,12 @@ class FlightController:
         raise FlightError(f'{what}: timeout after {timeout:.0f}s '
                           f'(nav={s.nav_state_name} armed={s.armed} acks={s.acks})')
 
+    # Optional callback(name, distance_remaining_m, elapsed_s) used by px4_bridge_node for action feedback.
+    progress_cb = None
+
     def _wait_reached(self, name: str, target: Vec3, timeout: float) -> StepResult:
         t0 = time.time()
+        last_fb = 0.0
         settled_since: Optional[float] = None
         max_err = 0.0
         err = float('inf')
@@ -254,6 +263,9 @@ class FlightController:
             self._assert_offboard_armed(s, name)
             err = distance(s.position_enu, target)
             max_err = max(max_err, err)
+            if self.progress_cb and time.time() - last_fb > 0.2:
+                last_fb = time.time()
+                self.progress_cb(name, err, time.time() - t0)
             if err < self.params.position_tolerance_m and s.speed < self.params.velocity_tolerance_mps:
                 settled_since = settled_since or time.time()
                 if time.time() - settled_since >= self.params.settle_time_s:

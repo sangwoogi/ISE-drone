@@ -1,0 +1,17 @@
+# Low-level flight primitive executed by px4_bridge (Phase 2). One goal at a time.
+string command                  # TAKEOFF | LAND | GOTO | HOVER | RETURN_HOME
+float32 height                  # TAKEOFF: metres above arming point
+float32 duration                # HOVER: seconds
+geometry_msgs/Point target      # GOTO: ENU position in odom frame [m]
+float32 yaw                     # GOTO: ENU yaw [rad]
+bool use_yaw                    # GOTO: false = keep current heading
+---
+bool success
+string message
+geometry_msgs/Point final_position
+float32 final_error             # [m]
+float32 elapsed                 # [s]
+---
+string state                    # e.g. "climbing", "en_route", "settling"
+float32 distance_remaining      # [m]
+float32 elapsed                 # [s]

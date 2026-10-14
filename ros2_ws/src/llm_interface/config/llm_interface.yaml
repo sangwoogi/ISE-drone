@@ -1,0 +1,7 @@
+/**:
+  ros__parameters:
+    backend: ollama            # ollama | mock | cloud
+    ollama_host: http://127.0.0.1:11434
+    model: qwen2.5:7b          # Phase 7 question: which local model
+    temperature: 0.0
+    max_rounds: 4

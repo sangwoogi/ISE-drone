@@ -1,0 +1,17 @@
+/**:
+  ros__parameters:
+    # Output frame ids of the common sensor topics (REP-103 / REP-104 optical frame)
+    camera_frame: camera_link
+    optical_frame: camera_optical_frame
+    # If true, overwrite header.frame_id of relayed images/camera_info with optical_frame
+    rewrite_frame_id: true
+    # If true, re-stamp messages with node time (use only when the source clock is unusable)
+    restamp: false
+    input:
+      color_image: /camera/color/image_raw_gz
+      depth_image: /camera/depth/image_raw_gz
+      camera_info: /camera/color/camera_info_gz
+    output:
+      color_image: /camera/color/image_raw
+      depth_image: /camera/depth/image_raw
+      camera_info: /camera/color/camera_info

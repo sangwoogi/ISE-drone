@@ -10,18 +10,29 @@ PX4 + Gazebo Harmonic + ROS 2 Jazzy 기반 실내 자율 Semantic Exploration �
 |---|---|---|
 | 0 | 개발 환경 (Ubuntu 24.04 / ROS 2 Jazzy / Gazebo Harmonic / PX4 v1.17.0 / uXRCE-DDS) | **완료** — `experiments/000_phase0_env/` |
 | 1 | PX4 + Gazebo 비행: `takeoff / hover / goto / return_home / land`, 10회 연속 시퀀스 | **완료** (10/10, failsafe OK, gz_x500_depth OK) — `experiments/001_phase1_flight/` |
-| 2+ | ROS 2 bringup, sensor adapter, SLAM, YOLO, Semantic Map, LLM, Mission Manager | 예정 |
+| — | 전 Phase 베이스라인 골격 (계약·스텁 노드·launch, 전체 체인 스모크 통과) | **완료** — `docs/phases/baseline.md` |
+| 2+ | ROS 2 bringup, sensor adapter, SLAM, YOLO, Semantic Map, LLM, Mission Manager (실구현) | 예정 |
 
 ## 저장소 구조
 
 ```
 config/px4/            px4_bridge 파라미터(토픽명 등) 포인터
-docs/                  계획서, 인터페이스 계약
-experiments/           실험 결과 (metrics.csv, trajectories/, plots)
+docs/                  계획서, 아키텍처, 인터페이스 계약, phases/ (Phase별 구현 기록)
+experiments/           실험 결과 (metrics.csv, trajectories/, plots, notes.md)
 ros2_ws/src/
-  px4_bridge/          px4_msgs를 캡슐화한 비행 API (FlightController)
-  drone_bringup/       launch 파일 (sitl.launch.py)
-  drone_interfaces/    커스텀 메시지 (Phase 5+)
+  drone_interfaces/    msg/srv/action 계약 (SemanticObject, VehicleState, MissionStatus, QueryObjects, AskLLM, FlightCommand, Mission)
+  px4_bridge/          px4_msgs를 캡슐화한 비행 API (FlightController) + px4_bridge_node (action, /drone/*, TF)
+  drone_bringup/       sitl / simulation / full_simulation launch, RViz config
+  sensor_adapter/      Gazebo(ros_gz_bridge) / 실카메라 → 공통 /camera/* 토픽          (Phase 3)
+  drone_slam/          RTAB-Map launch, ground-truth 노드, ATE/RPE 평가                (Phase 4)
+  object_detector/     DetectorBackend(mock|ultralytics|onnx) → vision_msgs Detection2DArray (Phase 5)
+  object_tracker/      IoU tracker → /perception/tracks                                 (Phase 6)
+  semantic_mapper/     bbox+depth+TF → 3D, association, relations, markers             (Phase 6)
+  semantic_database/   SQLite + /semantic_database/query                               (Phase 6)
+  llm_interface/       Ollama/mock backend, DB tools, QueryAgent, /llm/ask, CLI        (Phase 7)
+  mission_manager/     상태기계 + 안전검증 + /mission/execute action                    (Phase 8)
+  exploration/         frontier 검출 → /exploration/goal                                (Phase 8)
+  system_monitor/      CPU/RAM/온도/토픽 Hz → /diagnostics, CSV
   px4_msgs/, Micro-XRCE-DDS-Agent/   외부 (setup 스크립트가 clone, git 미추적)
 scripts/setup/         Phase 0 설치 스크립트 (01 ROS 2, 02 PX4+Gazebo, 03 colcon, 04 QGC)
 scripts/env.sh         ROS 작업 쉘 환경 (conda 비활성화 + ROS/ws source)
@@ -53,6 +64,15 @@ ros2 launch drone_bringup sitl.launch.py headless:=true  # GUI 없음
 
 # 터미널 2: 비행 시퀀스 1회 (Arm → Takeoff 1.5 m → Hover 5 s → +2 m → Hover → Return → Land)
 ros2 run px4_bridge flight_demo
+
+# Phase 2 bringup: SITL + px4_bridge 노드 + RViz, 액션으로 비행 명령
+ros2 launch drone_bringup simulation.launch.py
+ros2 action send_goal /px4_bridge/flight_command drone_interfaces/action/FlightCommand "{command: TAKEOFF, height: 1.2}"
+
+# 전체 스택 (mock detector / mock LLM / SLAM 제외 예시)
+ros2 launch drone_bringup full_simulation.launch.py enable_slam:=false detector_backend:=mock llm_backend:=mock
+ros2 action send_goal /mission/execute drone_interfaces/action/Mission "{action: TAKEOFF, param: 1.2}"
+ros2 run llm_interface llm_cli "의자는 몇 개야?"
 
 # Phase 1 통과 조건: 10회 연속 성공
 python3 tests/simulation/test_flight_sequence.py --runs 10
