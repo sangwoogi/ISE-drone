@@ -23,7 +23,9 @@ from launch.substitutions import LaunchConfiguration
 #  COM_OF_LOSS_T=3   offboard-loss timeout [s] (default 1). PX4 converts incoming timestamps
 #                    with the XRCE timesync offset; on WSL2 the wall clock is stepped backwards by
 #                    up to ~0.8 s every ~10 s, which looked like a lost offboard stream (-> RTL).
-DEFAULT_PX4_PARAMS = 'NAV_DLL_ACT=0,COM_OF_LOSS_T=3'
+#  SIM_BAT_DRAIN=3600 simulated battery drains fully after SIM_BAT_DRAIN seconds of being armed (default 60 s!)
+#                    and then "Battery unhealthy" blocks re-arming; SIM_BAT_MIN_PCT=90 keeps it above 90 %.
+DEFAULT_PX4_PARAMS = 'NAV_DLL_ACT=0,COM_OF_LOSS_T=3,SIM_BAT_DRAIN=3600,SIM_BAT_MIN_PCT=90'
 
 
 def _setup(context, *args, **kwargs):

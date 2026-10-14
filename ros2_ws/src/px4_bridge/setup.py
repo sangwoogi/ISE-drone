@@ -24,6 +24,7 @@ setup(
         'console_scripts': [
             'flight_demo = px4_bridge.flight_demo_node:main',
             'px4_bridge_node = px4_bridge.px4_bridge_node:main',
+            'teleop = px4_bridge.teleop_node:main',
         ],
     },
 )

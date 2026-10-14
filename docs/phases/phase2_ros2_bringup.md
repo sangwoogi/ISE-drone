@@ -64,6 +64,14 @@ scripts/run_phase2_test.sh 5                                          # 수락 �
 GOTO(+3 m) 송신 1.5 s 후 cancel → 결과 `CANCELED`, 3 s 후 드리프트 0.38 m, `armed=True`, `nav=OFFBOARD`(호버 유지). 이후 LAND 정상.
 
 ## 알려진 문제 / 교훈
+- **PX4 배터리 시뮬레이터 정지**: 긴 GUI 데모 세션에서 `battery_status`가 부팅 직후 한 번만 발행되고 멈춰, 5 s 이상 갱신이 없으면
+  commander가 "Battery unhealthy"로 재arming을 거부했다(`px4-listener battery_status`로 확인). 복구:
+  `px4-battery_simulator stop && px4-battery_simulator start`. 또한 기본 `SIM_BAT_DRAIN=60`(armed 60 s면 완전 방전)이 너무 짧아
+  launch 기본 파라미터에 `SIM_BAT_DRAIN=3600, SIM_BAT_MIN_PCT=90`을 추가했다.
+- `colcon build`는 반드시 `scripts/env.sh`를 source한 쉘에서 한다. `~/.local`의 최신 setuptools가 잡히면
+  `develop --uninstall` 미지원으로 ament_python 패키지 빌드가 실패한다(`PYTHONNOUSERSITE=1`이 막아 준다).
+- 데모용 키보드 조종: `ros2 run px4_bridge teleop` (t 이륙, w/a/s/d/r/f 이동, q/e 요, h 정지, l 착륙, x 종료). FlightCommand 액션만 사용.
+- 비행 영상: `experiments/002_phase2_bringup/gazebo_flight.mp4` (13 s, Gazebo GUI 카메라 `/gui/follow`로 드론 추적, 8 fps 프레임 캡처 → H.264).
 - `ros2 topic hz … | grep -m1`은 grep이 먼저 끝나 `timeout`이 124를 반환한다. `set -e -o pipefail` 스크립트에서는 점검 블록을 `set +e`로 감싼다.
 - WSLg에서 RViz 창의 X11 이름은 `rviz2`(제목 표시줄과 다름). 캡처는 `xwininfo -root -tree`로 id를 찾아 `import -window`.
 - rclpy `ServerGoalHandle.is_cancel_requested`는 속성이다. 콜백으로 넘길 때는 람다로 감싼다.

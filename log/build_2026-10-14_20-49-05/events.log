@@ -1,0 +1,19 @@
+[0.000000] (-) TimerEvent: {}
+[0.007735] (-) JobUnselected: {'identifier': 'drone_bringup'}
+[0.007804] (-) JobUnselected: {'identifier': 'drone_interfaces'}
+[0.007821] (-) JobUnselected: {'identifier': 'drone_slam'}
+[0.007833] (-) JobUnselected: {'identifier': 'exploration'}
+[0.007846] (-) JobUnselected: {'identifier': 'llm_interface'}
+[0.007859] (-) JobUnselected: {'identifier': 'microxrcedds_agent'}
+[0.007869] (-) JobUnselected: {'identifier': 'mission_manager'}
+[0.007880] (-) JobUnselected: {'identifier': 'object_detector'}
+[0.007891] (-) JobUnselected: {'identifier': 'object_tracker'}
+[0.007901] (-) JobUnselected: {'identifier': 'px4_msgs'}
+[0.007911] (-) JobUnselected: {'identifier': 'semantic_database'}
+[0.007921] (-) JobUnselected: {'identifier': 'semantic_mapper'}
+[0.007931] (-) JobUnselected: {'identifier': 'sensor_adapter'}
+[0.007941] (-) JobUnselected: {'identifier': 'system_monitor'}
+[0.007956] (px4_bridge) JobQueued: {'identifier': 'px4_bridge', 'dependencies': OrderedDict({'drone_interfaces': '/home/user/workspace/ISE-drone/install/drone_interfaces', 'px4_msgs': '/home/user/workspace/ISE-drone/install/px4_msgs'})}
+[0.007983] (px4_bridge) JobStarted: {'identifier': 'px4_bridge'}
+[0.012880] (px4_bridge) JobEnded: {'identifier': 'px4_bridge', 'rc': 1}
+[0.013554] (-) EventReactorShutdown: {}
