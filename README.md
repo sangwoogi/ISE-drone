@@ -2,7 +2,7 @@
 
 PX4 + Gazebo Harmonic + ROS 2 Jazzy 기반 실내 자율 Semantic Exploration 드론의 소프트웨어 스택.
 전체 계획은 [`docs/indoor_semantic_exploration_drone_software_plan.md`](docs/indoor_semantic_exploration_drone_software_plan.md),
-인터페이스 계약은 [`docs/ros_interfaces.md`](docs/ros_interfaces.md) 참조.
+인터페이스 계약은 [`docs/ros_interfaces.md`](docs/ros_interfaces.md), **이어서 작업하려면 [`docs/HANDOFF.md`](docs/HANDOFF.md)** 를 먼저 읽는다.
 
 ## 현재 상태
 

@@ -23,3 +23,10 @@ tools/qgc/*.AppImage
 *.swp
 # RTAB-Map databases are large (100+ MB)
 experiments/**/rtabmap.db
+
+# stray artifacts (colcon run from the wrong dir, pytest caches, SQLite maps)
+/build/
+/install/
+/log/
+*.sqlite
+.pytest_cache/
