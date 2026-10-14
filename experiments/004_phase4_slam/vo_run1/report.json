@@ -1,0 +1,279 @@
+{
+  "laps": 2,
+  "height": 1.2,
+  "flight_ok": true,
+  "flight_time_s": 194.9,
+  "waypoints": [
+    {
+      "lap": 1,
+      "wp": 0,
+      "xy": [
+        1.5,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.09500467032194138
+    },
+    {
+      "lap": 1,
+      "wp": 1,
+      "xy": [
+        3.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.08131984621286392
+    },
+    {
+      "lap": 1,
+      "wp": 2,
+      "xy": [
+        5.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.05195191502571106
+    },
+    {
+      "lap": 1,
+      "wp": 3,
+      "xy": [
+        7.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.1326218992471695
+    },
+    {
+      "lap": 1,
+      "wp": 4,
+      "xy": [
+        9.0,
+        0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.044831883162260056
+    },
+    {
+      "lap": 1,
+      "wp": 5,
+      "xy": [
+        10.5,
+        -0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.0466218926012516
+    },
+    {
+      "lap": 1,
+      "wp": 6,
+      "xy": [
+        9.0,
+        1.2
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.1352856159210205
+    },
+    {
+      "lap": 1,
+      "wp": 7,
+      "xy": [
+        7.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.10532939434051514
+    },
+    {
+      "lap": 1,
+      "wp": 8,
+      "xy": [
+        5.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.055592894554138184
+    },
+    {
+      "lap": 1,
+      "wp": 9,
+      "xy": [
+        3.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.02936858870089054
+    },
+    {
+      "lap": 1,
+      "wp": 10,
+      "xy": [
+        0.5,
+        1.2
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.0743517130613327
+    },
+    {
+      "lap": 1,
+      "wp": 11,
+      "xy": [
+        -1.5,
+        0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.05028783157467842
+    },
+    {
+      "lap": 1,
+      "wp": 12,
+      "xy": [
+        0.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.09683474153280258
+    },
+    {
+      "lap": 2,
+      "wp": 0,
+      "xy": [
+        1.5,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.11333132535219193
+    },
+    {
+      "lap": 2,
+      "wp": 1,
+      "xy": [
+        3.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.0910826101899147
+    },
+    {
+      "lap": 2,
+      "wp": 2,
+      "xy": [
+        5.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.07122398912906647
+    },
+    {
+      "lap": 2,
+      "wp": 3,
+      "xy": [
+        7.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.02562960982322693
+    },
+    {
+      "lap": 2,
+      "wp": 4,
+      "xy": [
+        9.0,
+        0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.021868018433451653
+    },
+    {
+      "lap": 2,
+      "wp": 5,
+      "xy": [
+        10.5,
+        -0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.07421670854091644
+    },
+    {
+      "lap": 2,
+      "wp": 6,
+      "xy": [
+        9.0,
+        1.2
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.1303904801607132
+    },
+    {
+      "lap": 2,
+      "wp": 7,
+      "xy": [
+        7.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.09238246083259583
+    },
+    {
+      "lap": 2,
+      "wp": 8,
+      "xy": [
+        5.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.006964587606489658
+    },
+    {
+      "lap": 2,
+      "wp": 9,
+      "xy": [
+        3.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.07420531660318375
+    },
+    {
+      "lap": 2,
+      "wp": 10,
+      "xy": [
+        0.5,
+        1.2
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.04741712287068367
+    },
+    {
+      "lap": 2,
+      "wp": 11,
+      "xy": [
+        -1.5,
+        0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.04042487218976021
+    },
+    {
+      "lap": 2,
+      "wp": 12,
+      "xy": [
+        0.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.08530484139919281
+    }
+  ],
+  "stats": {},
+  "ate_est_vs_gt": {
+    "error": "only 0 associated samples"
+  },
+  "ate_px4_vs_gt": {
+    "error": "only 0 associated samples"
+  },
+  "ate_odom_vs_gt": {
+    "error": "only 0 associated samples"
+  },
+  "pass": false
+}

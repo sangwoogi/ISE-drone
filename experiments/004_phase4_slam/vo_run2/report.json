@@ -1,0 +1,308 @@
+{
+  "laps": 2,
+  "height": 1.2,
+  "flight_ok": true,
+  "flight_time_s": 188.3,
+  "waypoints": [
+    {
+      "lap": 1,
+      "wp": 0,
+      "xy": [
+        1.5,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.06388763338327408
+    },
+    {
+      "lap": 1,
+      "wp": 1,
+      "xy": [
+        3.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.08464452624320984
+    },
+    {
+      "lap": 1,
+      "wp": 2,
+      "xy": [
+        5.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.04209953546524048
+    },
+    {
+      "lap": 1,
+      "wp": 3,
+      "xy": [
+        7.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.06485452502965927
+    },
+    {
+      "lap": 1,
+      "wp": 4,
+      "xy": [
+        9.0,
+        0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.045968133956193924
+    },
+    {
+      "lap": 1,
+      "wp": 5,
+      "xy": [
+        10.5,
+        -0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.055688802152872086
+    },
+    {
+      "lap": 1,
+      "wp": 6,
+      "xy": [
+        9.0,
+        1.2
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.08455993235111237
+    },
+    {
+      "lap": 1,
+      "wp": 7,
+      "xy": [
+        7.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.0663919597864151
+    },
+    {
+      "lap": 1,
+      "wp": 8,
+      "xy": [
+        5.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.055042628198862076
+    },
+    {
+      "lap": 1,
+      "wp": 9,
+      "xy": [
+        3.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.05969316139817238
+    },
+    {
+      "lap": 1,
+      "wp": 10,
+      "xy": [
+        0.5,
+        1.2
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.06581488251686096
+    },
+    {
+      "lap": 1,
+      "wp": 11,
+      "xy": [
+        -1.5,
+        0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.07321103662252426
+    },
+    {
+      "lap": 1,
+      "wp": 12,
+      "xy": [
+        0.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.11632946133613586
+    },
+    {
+      "lap": 2,
+      "wp": 0,
+      "xy": [
+        1.5,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.09826867282390594
+    },
+    {
+      "lap": 2,
+      "wp": 1,
+      "xy": [
+        3.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.06011420488357544
+    },
+    {
+      "lap": 2,
+      "wp": 2,
+      "xy": [
+        5.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.03186587244272232
+    },
+    {
+      "lap": 2,
+      "wp": 3,
+      "xy": [
+        7.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.05412191152572632
+    },
+    {
+      "lap": 2,
+      "wp": 4,
+      "xy": [
+        9.0,
+        0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.04009906202554703
+    },
+    {
+      "lap": 2,
+      "wp": 5,
+      "xy": [
+        10.5,
+        -0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.05673086643218994
+    },
+    {
+      "lap": 2,
+      "wp": 6,
+      "xy": [
+        9.0,
+        1.2
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.07257924228906631
+    },
+    {
+      "lap": 2,
+      "wp": 7,
+      "xy": [
+        7.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.09786118566989899
+    },
+    {
+      "lap": 2,
+      "wp": 8,
+      "xy": [
+        5.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.04310896620154381
+    },
+    {
+      "lap": 2,
+      "wp": 9,
+      "xy": [
+        3.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.03148975968360901
+    },
+    {
+      "lap": 2,
+      "wp": 10,
+      "xy": [
+        0.5,
+        1.2
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.034476760774850845
+    },
+    {
+      "lap": 2,
+      "wp": 11,
+      "xy": [
+        -1.5,
+        0.5
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.07149891555309296
+    },
+    {
+      "lap": 2,
+      "wp": 12,
+      "xy": [
+        0.0,
+        0.0
+      ],
+      "status": "SUCCEEDED",
+      "err": 0.08418548107147217
+    }
+  ],
+  "stats": {
+    "tracking_lost_events": 54,
+    "odom_lost_samples": 57,
+    "loop_closures": 22,
+    "tf_est_failures": 14,
+    "samples": {
+      "est": 1639,
+      "odom": 1653,
+      "px4": 3265,
+      "gt": 6478
+    }
+  },
+  "ate_est_vs_gt": {
+    "samples": 1638,
+    "rmse": 7.93,
+    "mean": 4.42,
+    "max": 19.277,
+    "rmse_aligned": 6.476,
+    "rpe_1s_rmse": 1.976,
+    "rpe_1s_mean": 0.365
+  },
+  "ate_px4_vs_gt": {
+    "samples": 3263,
+    "rmse": 0.091,
+    "mean": 0.086,
+    "max": 0.17,
+    "rmse_aligned": 0.059,
+    "rpe_1s_rmse": 0.039,
+    "rpe_1s_mean": 0.032
+  },
+  "ate_odom_vs_gt": {
+    "samples": 1652,
+    "rmse": 7.998,
+    "mean": 5.571,
+    "max": 19.441,
+    "rmse_aligned": 6.691,
+    "rpe_1s_rmse": 0.253,
+    "rpe_1s_mean": 0.115
+  },
+  "pass": false
+}

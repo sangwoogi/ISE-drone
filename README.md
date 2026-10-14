@@ -13,7 +13,8 @@ PX4 + Gazebo Harmonic + ROS 2 Jazzy 기반 실내 자율 Semantic Exploration �
 | — | 전 Phase 베이스라인 골격 (계약·스텁 노드·launch, 전체 체인 스모크 통과) | **완료** — `docs/phases/baseline.md` |
 | 2 | ROS 2 bringup: 단일 launch(PX4·Gazebo·Agent·Bridge·RViz), FlightCommand 액션 5/5, cancel→hold, `/drone/odom` | **완료** — `experiments/002_phase2_bringup/` |
 | 3 | Sensor pipeline: 실내 world `indoor_v1`, 정합 RGB-D 모델 `x500_rgbd`, `/camera/*` 검증, rosbag 기록/재생, GT 추출 | **완료** — `experiments/003_phase3_sensors/` |
-| 4+ | SLAM, YOLO, Semantic Map, LLM, Mission Manager (실구현) | 예정 |
+| 4 | SLAM: RTAB-Map(RGB-D) + PX4 EKF odometry, ATE 0.075 m / lost 0 / 2D·3D 지도, VO 모드 실험 포함 | **완료** — `experiments/004_phase4_slam/` |
+| 5+ | YOLO, Semantic Map, LLM, Mission Manager (실구현) | 예정 |
 
 ## 저장소 구조
 
@@ -91,6 +92,7 @@ scripts/run_phase2_test.sh 5          # Phase 2: 액션 경로 5회 + cancel→h
 ros2 launch drone_bringup simulation.launch.py vehicle:=gz_x500_rgbd world:=indoor_v1 use_sim_time:=true
 ros2 launch sensor_adapter gazebo_sensors.launch.py
 python3 tests/simulation/test_phase3_sensors.py
+scripts/run_phase4_slam.sh px4 2       # Phase 4: RTAB-Map + 2바퀴 평가 비행 (vo | vo_guess | px4)
 ```
 
 ## Mission API

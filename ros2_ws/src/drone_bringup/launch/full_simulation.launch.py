@@ -11,7 +11,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 
 
@@ -33,18 +33,23 @@ def generate_launch_description():
         DeclareLaunchArgument('db_path', default_value='semantic_map.sqlite'),
         # Gazebo publishes /clock (ros_gz_bridge); all stamps (camera, TF, detections) must share it.
         DeclareLaunchArgument('use_sim_time', default_value='true'),
+        # Phase 4 result: pure RGB-D visual odometry loses tracking 50-110x per lap in indoor_v1 (ATE 8 m);
+        # PX4 EKF odometry + RTAB-Map loop closure gives ATE 0.075 m. Keep 'vo' / 'vo_guess' for experiments.
+        DeclareLaunchArgument('odom_source', default_value='px4', description='SLAM odometry: px4 (EKF TF, default) | vo (rgbd_odometry)'),
     ]
     base = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(share('drone_bringup', 'launch', 'simulation.launch.py')),
         launch_arguments={'vehicle': lc('vehicle'), 'headless': lc('headless'), 'rviz': lc('rviz'), 'world': lc('world'),
-                          'static_map_odom': 'false', 'use_sim_time': lc('use_sim_time')}.items())
+                          'static_map_odom': 'false', 'use_sim_time': lc('use_sim_time'),
+                          # visual odometry owns odom->base_link; PX4 EKF mode keeps px4_bridge TF
+                          'px4_tf': PythonExpression(["'false' if '", lc('odom_source'), "' == 'vo' and '", lc('enable_slam'), "'.lower() in ('true','1','yes') else 'true'"])}.items())
     sensors = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(share('sensor_adapter', 'launch', 'gazebo_sensors.launch.py')),
         launch_arguments={'use_sim_time': lc('use_sim_time')}.items(),
         condition=IfCondition(lc('enable_sensors')))
     slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(share('drone_slam', 'launch', 'rtabmap.launch.py')),
-        launch_arguments={'use_sim_time': lc('use_sim_time')}.items(),
+        launch_arguments={'use_sim_time': lc('use_sim_time'), 'odom_source': lc('odom_source'), 'world': lc('world')}.items(),
         condition=IfCondition(lc('enable_slam')))
     # Without SLAM, keep map == odom so the semantic mapper still works (Phase 5/6 tests)
     map_odom = Node(package='tf2_ros', executable='static_transform_publisher', name='map_to_odom_static',

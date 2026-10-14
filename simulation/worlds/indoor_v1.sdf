@@ -97,7 +97,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>0.1 5.0 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>0.1 5.0 2.5</size></box></geometry>
-          <material><ambient>0.85 0.8 0.7 1</ambient><diffuse>0.85 0.8 0.7 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/wallA_west.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="wallA_north">
@@ -106,7 +106,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>6.0 0.1 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>6.0 0.1 2.5</size></box></geometry>
-          <material><ambient>0.6 0.6 0.65 1</ambient><diffuse>0.6 0.6 0.65 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/wallA_north.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="wallA_south">
@@ -115,7 +115,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>6.0 0.1 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>6.0 0.1 2.5</size></box></geometry>
-          <material><ambient>0.55 0.7 0.55 1</ambient><diffuse>0.55 0.7 0.55 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/wallA_south.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="wallA_east_n">
@@ -124,7 +124,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>0.1 1.5 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>0.1 1.5 2.5</size></box></geometry>
-          <material><ambient>0.85 0.8 0.7 1</ambient><diffuse>0.85 0.8 0.7 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/wallA_east_n.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="wallA_east_s">
@@ -133,7 +133,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>0.1 1.5 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>0.1 1.5 2.5</size></box></geometry>
-          <material><ambient>0.85 0.8 0.7 1</ambient><diffuse>0.85 0.8 0.7 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/wallA_east_s.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="hall_north">
@@ -142,7 +142,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>4.0 0.1 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>4.0 0.1 2.5</size></box></geometry>
-          <material><ambient>0.55 0.65 0.85 1</ambient><diffuse>0.55 0.65 0.85 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/hall_north.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="hall_south">
@@ -151,7 +151,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>4.0 0.1 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>4.0 0.1 2.5</size></box></geometry>
-          <material><ambient>0.55 0.65 0.85 1</ambient><diffuse>0.55 0.65 0.85 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/hall_south.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="wallB_west_n">
@@ -160,7 +160,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>0.1 1.5 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>0.1 1.5 2.5</size></box></geometry>
-          <material><ambient>0.85 0.8 0.7 1</ambient><diffuse>0.85 0.8 0.7 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/wallB_west_n.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="wallB_west_s">
@@ -169,7 +169,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>0.1 1.5 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>0.1 1.5 2.5</size></box></geometry>
-          <material><ambient>0.85 0.8 0.7 1</ambient><diffuse>0.85 0.8 0.7 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/wallB_west_s.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="wallB_north">
@@ -178,7 +178,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>5.0 0.1 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>5.0 0.1 2.5</size></box></geometry>
-          <material><ambient>0.6 0.6 0.65 1</ambient><diffuse>0.6 0.6 0.65 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/wallB_north.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="wallB_south">
@@ -187,7 +187,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>5.0 0.1 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>5.0 0.1 2.5</size></box></geometry>
-          <material><ambient>0.55 0.7 0.55 1</ambient><diffuse>0.55 0.7 0.55 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/wallB_south.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="wallB_east">
@@ -196,7 +196,7 @@
       <link name="link">
         <collision name="c"><geometry><box><size>0.1 5.0 2.5</size></box></geometry></collision>
         <visual name="v"><geometry><box><size>0.1 5.0 2.5</size></box></geometry>
-          <material><ambient>0.85 0.8 0.7 1</ambient><diffuse>0.85 0.8 0.7 1</diffuse></material></visual>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/wallB_east.png</albedo_map><roughness>0.9</roughness></metal></pbr></material></visual>
       </link>
     </model>
     <model name="panel_0">
@@ -291,38 +291,54 @@
     </model>
     <include>
       <name>table_01</name>
+      <static>true</static>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Table</uri>
       <pose>1.5 1.5 0 0 0 0</pose>
     </include>
     <include>
       <name>chair_01</name>
+      <static>true</static>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Chair</uri>
       <pose>1.5 0.6 0 0 0 1.5708</pose>
     </include>
     <include>
       <name>bookshelf_01</name>
+      <static>true</static>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Bookshelf</uri>
       <pose>-2.4 1.6 0 0 0 -1.5708</pose>
     </include>
     <include>
       <name>person_01</name>
+      <static>true</static>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Standing person</uri>
       <pose>-1.5 -1.5 0 0 0 0.8</pose>
     </include>
     <include>
       <name>sofa_01</name>
+      <static>true</static>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sofa</uri>
       <pose>9.5 1.6 0 0 0 3.14159</pose>
     </include>
     <include>
       <name>chair_02</name>
+      <static>true</static>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/OfficeChairBlack</uri>
       <pose>10.5 -0.8 0 0 0 -2.0</pose>
     </include>
     <include>
       <name>table_02</name>
+      <static>true</static>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/BedsideTable</uri>
       <pose>8.3 -1.9 0 0 0 0</pose>
     </include>
+
+    <model name="floor_textured">
+      <static>true</static>
+      <pose>4.5 0 0.005 0 0 0</pose>
+      <link name="link">
+        <visual name="v"><geometry><plane><normal>0 0 1</normal><size>15.2 5.2</size></plane></geometry>
+          <material><pbr><metal><albedo_map>model://ise_textures/materials/textures/carpet.png</albedo_map><roughness>1.0</roughness></metal></pbr></material></visual>
+      </link>
+    </model>
   </world>
 </sdf>

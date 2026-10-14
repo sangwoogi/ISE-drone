@@ -1,0 +1,19 @@
+# topics
+/camera/color/image_raw
+/camera/color/image_raw_gz
+/drone/odom
+/ground_truth/pose
+/slam/info
+/slam/map_data
+/slam/odom
+/slam/odom_info
+/slam/pointcloud
+# rates
+/ground_truth/pose         
+/slam/odom                 average rate: 4.317
+
+/camera/color/image_raw    average rate: 10.085
+
+# tf
+- Translation: [0.000, -0.000, 0.000]
+- Rotation: in Quaternion (xyzw) [0.000, 0.000, 0.000, 1.000]

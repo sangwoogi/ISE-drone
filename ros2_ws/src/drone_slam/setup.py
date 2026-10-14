@@ -24,7 +24,8 @@ setup(
     entry_points={
         'console_scripts': [
             'slam_eval = drone_slam.slam_eval:main',
-            'gt_pose_node = drone_slam.gt_pose_node:main'
+            'gt_pose_node = drone_slam.gt_pose_node:main',
+            'trajectory_recorder = drone_slam.trajectory_recorder:main'
         ],
     },
 )

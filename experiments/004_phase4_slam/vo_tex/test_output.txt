@@ -1,0 +1,82 @@
+takeoff SUCCEEDED
+lap 1 wp  0 (  1.5,  0.0) SUCCEEDED
+lap 1 wp  1 (  3.0,  0.0) SUCCEEDED
+lap 1 wp  2 (  5.0,  0.0) SUCCEEDED
+lap 1 wp  3 (  7.0,  0.0) SUCCEEDED
+lap 1 wp  4 (  9.0,  0.5) SUCCEEDED
+lap 1 wp  5 ( 10.5, -0.5) SUCCEEDED
+lap 1 wp  6 (  9.0,  1.2) SUCCEEDED
+lap 1 wp  7 (  7.0,  0.0) SUCCEEDED
+lap 1 wp  8 (  5.0,  0.0) SUCCEEDED
+lap 1 wp  9 (  3.0,  0.0) SUCCEEDED
+lap 1 wp 10 (  0.5,  1.2) SUCCEEDED
+lap 1 wp 11 ( -1.5,  0.5) SUCCEEDED
+lap 1 wp 12 (  0.0,  0.0) SUCCEEDED
+lap 2 wp  0 (  1.5,  0.0) SUCCEEDED
+lap 2 wp  1 (  3.0,  0.0) SUCCEEDED
+lap 2 wp  2 (  5.0,  0.0) SUCCEEDED
+lap 2 wp  3 (  7.0,  0.0) SUCCEEDED
+lap 2 wp  4 (  9.0,  0.5) SUCCEEDED
+lap 2 wp  5 ( 10.5, -0.5) SUCCEEDED
+lap 2 wp  6 (  9.0,  1.2) SUCCEEDED
+lap 2 wp  7 (  7.0,  0.0) SUCCEEDED
+lap 2 wp  8 (  5.0,  0.0) SUCCEEDED
+lap 2 wp  9 (  3.0,  0.0) SUCCEEDED
+lap 2 wp 10 (  0.5,  1.2) SUCCEEDED
+lap 2 wp 11 ( -1.5,  0.5) SUCCEEDED
+lap 2 wp 12 (  0.0,  0.0) SUCCEEDED
+land SUCCEEDED
+{
+  "laps": 2,
+  "height": 1.2,
+  "flight_ok": true,
+  "flight_time_s": 199.4,
+  "map": {
+    "width": 472,
+    "height": 220,
+    "resolution": 0.05000000074505806,
+    "free_cells": 0,
+    "occupied_cells": 0
+  },
+  "stats": {
+    "tracking_lost_events": 60,
+    "odom_lost_samples": 69,
+    "loop_closures": 24,
+    "tf_est_failures": 8,
+    "samples": {
+      "est": 1600,
+      "odom": 1603,
+      "px4": 3214,
+      "gt": 6478
+    }
+  },
+  "ate_est_vs_gt": {
+    "samples": 1600,
+    "rmse": 8.483,
+    "mean": 4.892,
+    "max": 19.359,
+    "rmse_aligned": 6.907,
+    "rpe_1s_rmse": 1.274,
+    "rpe_1s_mean": 0.262
+  },
+  "ate_px4_vs_gt": {
+    "samples": 3211,
+    "rmse": 0.063,
+    "mean": 0.054,
+    "max": 0.173,
+    "rmse_aligned": 0.06,
+    "rpe_1s_rmse": 0.04,
+    "rpe_1s_mean": 0.033
+  },
+  "ate_odom_vs_gt": {
+    "samples": 1603,
+    "rmse": 11.077,
+    "mean": 8.003,
+    "max": 20.353,
+    "rmse_aligned": 8.49,
+    "rpe_1s_rmse": 0.3,
+    "rpe_1s_mean": 0.149
+  },
+  "pass": false
+}
+PHASE4 SLAM: FAIL

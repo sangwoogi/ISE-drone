@@ -21,3 +21,5 @@ experiments/**/*.ulg
 tools/qgc/*.AppImage
 .vscode/
 *.swp
+# RTAB-Map databases are large (100+ MB)
+experiments/**/rtabmap.db

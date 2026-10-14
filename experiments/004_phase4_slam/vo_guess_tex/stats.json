@@ -1,0 +1,12 @@
+{
+  "tracking_lost_events": 110,
+  "odom_lost_samples": 129,
+  "loop_closures": 31,
+  "tf_est_failures": 26,
+  "samples": {
+    "est": 1610,
+    "odom": 1612,
+    "px4": 3270,
+    "gt": 6575
+  }
+}

@@ -10,7 +10,7 @@
 | 2 | [phase2_ros2_bringup.md](phase2_ros2_bringup.md) | 완료 (2026-10-14) |
 | — | [baseline.md](baseline.md) — 전 Phase 골격 | 완료 (2026-10-14) |
 | 3 | [phase3_sensor_pipeline.md](phase3_sensor_pipeline.md) | 완료 (2026-10-14) |
-| 4 | phase4_slam.md | 예정 |
+| 4 | [phase4_slam.md](phase4_slam.md) | 완료 (2026-10-14) |
 | 5 | phase5_detection.md | 예정 |
 | 6 | phase6_semantic_mapping.md | 예정 |
 | 7 | phase7_llm.md | 예정 |

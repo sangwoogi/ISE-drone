@@ -112,9 +112,10 @@ Phase 2에서 bridge 노드/RViz를 추가한다.
 | `/drone/pose` | geometry_msgs/PoseStamped | px4_bridge | RViz | 전체 자세(FLU→ENU 쿼터니언) |
 | `/drone/odom` | nav_msgs/Odometry | px4_bridge | SLAM(Phase 4), 평가 | frame odom, child base_link, 선속도 포함, 각속도 0 (PX4가 vehicle_angular_velocity를 기본 발행하지 않음) |
 | `/ground_truth/pose` | geometry_msgs/PoseStamped | drone_slam/gt_pose_node | **평가 전용** | frame `map_gt` |
-| `/slam/odom` | nav_msgs/Odometry | RTAB-Map(옵션) | | V1은 PX4 odom 사용 |
-| `/slam/map` | nav_msgs/OccupancyGrid | RTAB-Map | exploration | |
-| `/slam/pointcloud` | sensor_msgs/PointCloud2 | RTAB-Map | RViz | |
+| `/slam/odom`, `/slam/odom_info` | nav_msgs/Odometry, rtabmap_msgs/OdomInfo | rgbd_odometry (`odom_source:=vo`) | recorder | 기본 px4 모드에서는 없음 |
+| `/slam/map` | nav_msgs/OccupancyGrid | RTAB-Map (`map` remap) | exploration | 0.05 m, transient-local |
+| `/slam/map_prob`, `/slam/pointcloud`, `/slam/info`, `/slam/map_data` | OccupancyGrid, PointCloud2, rtabmap_msgs/Info, MapData | RTAB-Map | RViz, recorder | |
+| `/ground_truth/pose` | geometry_msgs/PoseStamped | gt_pose_node (`gz topic -e`) | **평가 전용** | frame `map_gt`, ~33 Hz |
 | `/perception/detections_2d` | vision_msgs/Detection2DArray | object_detector | tracker | class_id=string, score |
 | `/perception/detections_image` | sensor_msgs/Image | object_detector | RViz | 디버그 |
 | `/perception/tracks` | vision_msgs/Detection2DArray | object_tracker | semantic_mapper | `id = class#track` |
@@ -137,7 +138,7 @@ Phase 2에서 bridge 노드/RViz를 추가한다.
 ### 6.3 TF 트리
 
 ```
-map ──(SLAM, Phase 4; 그 전엔 static identity)──▶ odom ──(px4_bridge)──▶ base_link ──(static)──▶ camera_link ──(static)──▶ camera_optical_frame
+map ──(RTAB-Map)──▶ odom ──(px4_bridge, odom_source=px4)──▶ base_link        [vo 모드: odom ──(rgbd_odometry)──▶ base_link, vo_guess: odom ─(VO)─▶ odom_px4 ─(px4_bridge)─▶ base_link] ──(static)──▶ camera_link ──(static)──▶ camera_optical_frame
 map_gt (ground truth, 평가 전용, 트리에 연결하지 않음)
 ```
 

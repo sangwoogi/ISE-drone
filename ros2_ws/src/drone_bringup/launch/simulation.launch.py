@@ -23,6 +23,10 @@ def generate_launch_description():
         DeclareLaunchArgument('world', default_value='', description='PX4_GZ_WORLD name, e.g. indoor_v1 (empty = PX4 default)'),
         DeclareLaunchArgument('rviz', default_value='true'),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
+        DeclareLaunchArgument('px4_odom_frame', default_value='odom',
+                              description="px4_bridge odom frame name ('odom_px4' when visual odometry uses PX4 as guess)"),
+        DeclareLaunchArgument('px4_tf', default_value='true',
+                              description='px4_bridge publishes odom->base_link TF (set false when visual odometry owns it)'),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(bringup, 'launch', 'sitl.launch.py')),
             launch_arguments={'vehicle': LaunchConfiguration('vehicle'), 'headless': LaunchConfiguration('headless'),
@@ -30,7 +34,9 @@ def generate_launch_description():
         # give PX4 + agent a few seconds before the bridge starts streaming
         TimerAction(period=5.0, actions=[
             Node(package='px4_bridge', executable='px4_bridge_node', name='px4_bridge', output='screen',
-                 parameters=[px4_bridge_cfg, {'use_sim_time': LaunchConfiguration('use_sim_time')}]),
+                 parameters=[px4_bridge_cfg, {'use_sim_time': LaunchConfiguration('use_sim_time'),
+                                              'publish_tf': LaunchConfiguration('px4_tf'),
+                                              'odom_frame': LaunchConfiguration('px4_odom_frame')}]),
         ]),
         Node(package='rviz2', executable='rviz2', name='rviz2', arguments=['-d', rviz_cfg], output='log',
              parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],

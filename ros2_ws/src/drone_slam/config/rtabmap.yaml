@@ -1,20 +1,50 @@
-# RTAB-Map RGB-D parameters (Phase 4 baseline). Tune after first baseline run.
+# RTAB-Map parameters shared by rgbd_odometry and rtabmap (Phase 4 baseline, tuned on indoor_v1).
+# Core RTAB-Map parameters must be strings.
 /**:
   ros__parameters:
-    frame_id: base_link
-    odom_frame_id: odom
-    map_frame_id: map
     subscribe_depth: true
     subscribe_rgb: true
     approx_sync: true
-    queue_size: 10
-    qos_image: 2            # sensor data (best effort)
+    approx_sync_max_interval: 0.05
+    qos_image: 2            # best effort (sensor data)
     qos_camera_info: 2
-    # RTAB-Map core params are strings
+    qos_odom: 1
+    wait_imu_to_init: false
+    # --- odometry (rgbd_odometry) ---
+    "Odom/Strategy": "0"              # 0 = Frame-to-Map (F2M), robust on low-texture walls
+    "Odom/ResetCountdown": "1"        # auto-reset after 1 lost frame -> tracking resumes (counted as lost events)
+    "Vis/MaxFeatures": "1000"
+    "Vis/CorType": "0"
+    "OdomF2M/MaxSize": "2000"
+    "Odom/GuessMotion": "true"
+    # --- mapping (rtabmap) ---
     "Rtabmap/DetectionRate": "2"
+    # loop closure robustness: synthetic rooms look alike (perceptual aliasing) -> demand strong geometric evidence
+    "Rtabmap/LoopThr": "0.15"
+    "Vis/MinInliers": "25"
+    "RGBD/OptimizeMaxError": "1.0"
+    "RGBD/LoopClosureReextractFeatures": "true"
+    "RGBD/ProximityMaxGraphDepth": "0"
+    "RGBD/ProximityPathMaxNeighbors": "0"
+    "Mem/RehearsalSimilarity": "0.30"
     "RGBD/NeighborLinkRefining": "true"
     "RGBD/ProximityBySpace": "true"
+    "RGBD/AngularUpdate": "0.05"
+    "RGBD/LinearUpdate": "0.05"
+    "RGBD/OptimizeFromGraphEnd": "false"
     "Reg/Force3DoF": "false"
-    "Grid/FromDepth": "true"
-    "Grid/RangeMax": "5.0"
-    "Grid/3D": "true"
+    "Reg/Strategy": "0"
+    "Mem/STMSize": "30"
+    "Kp/MaxFeatures": "500"
+    # --- occupancy grid (/slam/map) ---
+    "Grid/Sensor": "1"                 # 0 laser scan, 1 depth image, 2 both (was Grid/FromDepth before 0.21)
+    "Grid/RangeMax": "6.0"
+    "Grid/CellSize": "0.05"
+    "Grid/3D": "false"
+    "Grid/RayTracing": "true"
+    "Grid/MaxGroundHeight": "0.2"
+    "Grid/MaxObstacleHeight": "2.2"
+    "Grid/NormalsSegmentation": "false"
+    "Grid/ClusterRadius": "0.1"
+    "GridGlobal/MinSize": "10"
+    "Grid/MapFrameProjection": "true"
