@@ -1,0 +1,23 @@
+# ROS 2 / colcon
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+# external sources cloned by scripts/setup/03_ros2_ws.sh
+ros2_ws/src/px4_msgs/
+ros2_ws/src/Micro-XRCE-DDS-Agent/
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+
+# experiment artifacts (keep metrics.csv / notes.md, drop bags & logs)
+experiments/**/rosbag/
+experiments/**/*.log
+experiments/**/*.ulg
+
+# tools
+tools/qgc/*.AppImage
+.vscode/
+*.swp

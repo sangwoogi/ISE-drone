@@ -1,0 +1,26 @@
+[INFO] [1791962580.803843144] [px4_bridge]: waiting for PX4 telemetry / valid local position ...
+[INFO] [1791962585.813873073] [px4_bridge]: waiting for PX4 telemetry / valid local position ...
+[INFO] [1791962589.344664760] [px4_bridge]: PX4 ready: nav_state=AUTO_LOITER armed=False pos=(-0.00, 0.00, 0.04)
+[INFO] [1791962589.344981476] [px4_bridge]: takeoff: home=(-0.00, 0.00, 0.04) target=(-0.00, 0.00, 1.54)
+[INFO] [1791962590.596823998] [px4_bridge]: enter OFFBOARD: ok (0.1s)
+[INFO] [1791962590.856236952] [px4_bridge]: arm: ok (0.3s)
+[INFO] [1791962602.279684944] [px4_bridge]: takeoff: reached (-0.00, 0.00, 1.54) err=0.16m in 11.4s
+[INFO] [1791962602.279926650] [px4_bridge]: hover: 5.0s at (-0.00, 0.00, 1.54)
+[INFO] [1791962607.294493983] [px4_bridge]: goto: target=(2.00, 0.00, 1.54) yaw=-6deg
+[INFO] [1791962612.097451008] [px4_bridge]: goto: reached (2.00, 0.00, 1.54) err=0.08m in 4.8s
+[INFO] [1791962612.097826730] [px4_bridge]: hover: 2.0s at (2.00, 0.00, 1.54)
+[INFO] [1791962614.136479940] [px4_bridge]: goto: target=(-0.00, 0.00, 1.54) yaw=-6deg
+[INFO] [1791962618.635075537] [px4_bridge]: goto: reached (-0.00, 0.00, 1.54) err=0.10m in 4.5s
+[INFO] [1791962618.635376517] [px4_bridge]: hover: 1.0s at (-0.00, 0.00, 1.54)
+[INFO] [1791962619.653871948] [px4_bridge]: land: requesting AUTO_LAND
+[INFO] [1791962619.757187523] [px4_bridge]: enter AUTO_LAND: ok (0.1s)
+[INFO] [1791962628.202233795] [px4_bridge]: landed and disarmed at (0.11, 0.13, -0.02)
+step        ok    time[s]  final_err[m]  max_err[m]
+takeoff     True     11.4          0.16        1.52
+hover       True      5.0          0.04        0.16
+goto        True      4.8          0.08        2.01
+hover       True      2.0          0.08        0.12
+return_home True      4.5          0.10        1.95
+hover       True      1.0          0.11        0.11
+land        True      8.5          0.00        0.00
+SEQUENCE OK in 47.4s

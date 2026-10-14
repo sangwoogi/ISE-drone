@@ -1,0 +1,11 @@
+[INFO] [1791962547.630402769] [phase1_failsafe_test]: waiting for PX4 telemetry / valid local position ...
+[INFO] [1791962547.831026804] [phase1_failsafe_test]: PX4 ready: nav_state=AUTO_LOITER armed=False pos=(-0.01, -0.00, 0.04)
+[INFO] [1791962547.831266060] [phase1_failsafe_test]: takeoff: home=(-0.01, -0.00, 0.04) target=(-0.01, -0.00, 1.54)
+[INFO] [1791962549.182502217] [phase1_failsafe_test]: enter OFFBOARD: ok (0.2s)
+[INFO] [1791962549.383811575] [phase1_failsafe_test]: arm: ok (0.2s)
+[INFO] [1791962557.492589005] [phase1_failsafe_test]: takeoff: reached (-0.01, -0.00, 1.54) err=0.17m in 8.1s
+[INFO] [1791962557.492849500] [phase1_failsafe_test]: hover: 3.0s at (-0.01, -0.00, 1.54)
+>>> stopping OffboardControlMode / TrajectorySetpoint stream
+nav_state transitions after stream stop: [(2.36, 'AUTO_RTL'), (8.48, 'OFFBOARD')]
+left OFFBOARD after: 2.3597702980041504s   landed=True armed=False
+FAILSAFE OK
