@@ -162,6 +162,7 @@ class PX4BridgeNode(Node):
             result.elapsed = float(time.time() - t0)
             goal_handle.canceled()
         except FlightError as e:
+            self.get_logger().error(f'{req.command} failed: {e}')
             result.success, result.message = False, str(e)
             result.elapsed = float(time.time() - t0)
             goal_handle.abort()

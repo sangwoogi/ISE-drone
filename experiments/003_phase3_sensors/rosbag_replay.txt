@@ -1,0 +1,6 @@
+[env.sh] ROS_DISTRO=jazzy  PX4_DIR=/home/user/PX4-Autopilot  python=/usr/bin/python3
+/camera/color/image_raw        average rate: 14.460
+/camera/depth/image_raw        average rate: 12.371
+/camera/color/camera_info      average rate: 40.083
+/tf                            average rate: 20.030
+[replay] PASS

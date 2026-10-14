@@ -1,0 +1,13 @@
+Files:             indoor_v1_sample_0.mcap
+Bag size:          433.9 MiB
+Duration:          15.044000000s
+Topic information: Topic: /camera/color/camera_info | Type: sensor_msgs/msg/CameraInfo | Count: 602 | Serialization Format: cdr
+                   Topic: /camera/color/image_raw | Type: sensor_msgs/msg/Image | Count: 252 | Serialization Format: cdr
+                   Topic: /camera/depth/camera_info | Type: sensor_msgs/msg/CameraInfo | Count: 602 | Serialization Format: cdr
+                   Topic: /camera/depth/image_raw | Type: sensor_msgs/msg/Image | Count: 180 | Serialization Format: cdr
+                   Topic: /clock | Type: rosgraph_msgs/msg/Clock | Count: 3761 | Serialization Format: cdr
+                   Topic: /drone/odom | Type: nav_msgs/msg/Odometry | Count: 282 | Serialization Format: cdr
+                   Topic: /drone/vehicle_state | Type: drone_interfaces/msg/VehicleState | Count: 282 | Serialization Format: cdr
+                   Topic: /fmu/out/vehicle_odometry | Type: px4_msgs/msg/VehicleOdometry | Count: 1503 | Serialization Format: cdr
+                   Topic: /tf | Type: tf2_msgs/msg/TFMessage | Count: 282 | Serialization Format: cdr
+                   Topic: /tf_static | Type: tf2_msgs/msg/TFMessage | Count: 3 | Serialization Format: cdr

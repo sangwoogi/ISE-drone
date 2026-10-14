@@ -1,0 +1,18 @@
+{
+  "world": "indoor_v1",
+  "frame": "map (= Gazebo world frame; drone spawns at origin, x East, y North)",
+  "note": "Nominal placement. Authoritative ground truth is exported from the running simulation by tools/export_gt_objects.py.",
+  "rooms": {"A": {"x": [-3, 3], "y": [-2.5, 2.5]}, "hallway": {"x": [3, 7], "y": [-1, 1]}, "B": {"x": [7, 12], "y": [-2.5, 2.5]}},
+  "objects": [
+    {"id": "table_01", "class": "dining table", "model": "OpenRobotics/Table", "xy": [1.5, 1.5]},
+    {"id": "chair_01", "class": "chair", "model": "OpenRobotics/Chair", "xy": [1.5, 0.6]},
+    {"id": "bookshelf_01", "class": "book", "model": "OpenRobotics/Bookshelf", "xy": [-2.4, 1.6]},
+    {"id": "person_01", "class": "person", "model": "OpenRobotics/Standing person", "xy": [-1.5, -1.5]},
+    {"id": "sofa_01", "class": "couch", "model": "OpenRobotics/Sofa", "xy": [9.5, 1.6]},
+    {"id": "chair_02", "class": "chair", "model": "OpenRobotics/OfficeChairBlack", "xy": [10.5, -0.8]},
+    {"id": "table_02", "class": "dining table", "model": "OpenRobotics/BedsideTable", "xy": [8.3, -1.9]},
+    {"id": "box_red", "class": "backpack", "model": "primitive box", "xy": [2.2, -1.8]},
+    {"id": "bottle_blue", "class": "bottle", "model": "primitive cylinder", "xy": [1.5, 1.5]},
+    {"id": "box_cardboard", "class": "box", "model": "primitive box", "xy": [10.8, -1.9]}
+  ]
+}

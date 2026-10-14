@@ -42,7 +42,7 @@ class FlightParams:
     settle_time_s: float = 0.5
     connection_timeout_s: float = 60.0
     arm_timeout_s: float = 15.0
-    goto_timeout_s: float = 60.0
+    goto_timeout_s: float = 120.0
     land_timeout_s: float = 60.0
     # minimal safety envelope (Phase 8 will replace this with a real Safety Validator)
     min_altitude_m: float = 0.5

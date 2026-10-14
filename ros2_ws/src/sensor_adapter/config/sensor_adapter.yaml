@@ -7,11 +7,15 @@
     rewrite_frame_id: true
     # If true, re-stamp messages with node time (use only when the source clock is unusable)
     restamp: false
+    # The simulated depth camera publishes no CameraInfo of its own; republish the colour one (same geometry).
+    registered_depth: true
     input:
       color_image: /camera/color/image_raw_gz
       depth_image: /camera/depth/image_raw_gz
       camera_info: /camera/color/camera_info_gz
+      depth_info: /camera/depth/camera_info_gz
     output:
       color_image: /camera/color/image_raw
       depth_image: /camera/depth/image_raw
       camera_info: /camera/color/camera_info
+      depth_info: /camera/depth/camera_info

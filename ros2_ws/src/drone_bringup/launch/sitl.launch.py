@@ -27,6 +27,39 @@ from launch.substitutions import LaunchConfiguration
 #                    and then "Battery unhealthy" blocks re-arming; SIM_BAT_MIN_PCT=90 keeps it above 90 %.
 DEFAULT_PX4_PARAMS = 'NAV_DLL_ACT=0,COM_OF_LOSS_T=3,SIM_BAT_DRAIN=3600,SIM_BAT_MIN_PCT=90'
 
+# vehicles defined in simulation/models/ -> PX4 airframe id to boot with
+CUSTOM_VEHICLE_AUTOSTART = {'gz_x500_rgbd': '4002'}
+
+
+def _repo_root():
+    # install/drone_bringup/share/drone_bringup/launch -> repo root is 6 levels up from the install dir layout
+    here = os.path.dirname(os.path.abspath(__file__))
+    for _ in range(8):
+        if os.path.isdir(os.path.join(here, 'simulation', 'models')) and os.path.isdir(os.path.join(here, 'ros2_ws')):
+            return here
+        here = os.path.dirname(here)
+    return os.environ.get('ISE_DRONE_ROOT', '')
+
+
+def _link_assets(px4_dir):
+    """Symlink simulation/models/* and simulation/worlds/*.sdf into PX4's gz tree (idempotent)."""
+    root = _repo_root()
+    if not root:
+        return
+    for sub, pattern in (('models', None), ('worlds', '.sdf')):
+        src_dir = os.path.join(root, 'simulation', sub)
+        dst_dir = os.path.join(px4_dir, 'Tools', 'simulation', 'gz', sub)
+        if not (os.path.isdir(src_dir) and os.path.isdir(dst_dir)):
+            continue
+        for name in os.listdir(src_dir):
+            if pattern and not name.endswith(pattern):
+                continue
+            src, dst = os.path.join(src_dir, name), os.path.join(dst_dir, name)
+            if os.path.islink(dst) and os.readlink(dst) == src:
+                continue
+            if not os.path.exists(dst):
+                os.symlink(src, dst)
+
 
 def _setup(context, *args, **kwargs):
     vehicle = LaunchConfiguration('vehicle').perform(context)
@@ -45,6 +78,12 @@ def _setup(context, *args, **kwargs):
     env = dict(os.environ)
     env['PX4_SIM_MODEL'] = vehicle          # e.g. gz_x500 -> airframe 4001_gz_x500
     env['GZ_IP'] = '127.0.0.1'
+    # Repo-provided models (simulation/models/*) have no PX4 airframe file; reuse the x500_depth airframe (4002)
+    # and make sure they are linked into the PX4 model tree (scripts/setup/05_sim_assets.sh does the same).
+    airframes = os.path.join(rootfs, 'etc', 'init.d-posix', 'airframes')
+    if os.path.isdir(airframes) and not any(f.endswith('_' + vehicle) for f in os.listdir(airframes)):
+        env['PX4_SYS_AUTOSTART'] = CUSTOM_VEHICLE_AUTOSTART.get(vehicle, '4002')
+    _link_assets(px4_dir)
     if headless:
         env['HEADLESS'] = '1'
     if world:
@@ -100,7 +139,7 @@ def _setup(context, *args, **kwargs):
 def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('vehicle', default_value='gz_x500',
-                              description='PX4 SITL target: gz_x500 | gz_x500_depth | gz_x500_vision ...'),
+                              description='PX4 SITL target: gz_x500 | gz_x500_depth | gz_x500_rgbd (repo model) ...'),
         DeclareLaunchArgument('headless', default_value='false',
                               description='true: run Gazebo without GUI (HEADLESS=1)'),
         DeclareLaunchArgument('world', default_value='',

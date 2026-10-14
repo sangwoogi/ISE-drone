@@ -1,0 +1,89 @@
+{
+  "duration_s": 15.0,
+  "checks": {
+    "rate_color": true,
+    "rate_depth": true,
+    "rate_camera_info": true,
+    "frame_ids": true,
+    "registered_geometry": true,
+    "sync": true,
+    "tf": true
+  },
+  "rates_hz": {
+    "color": 14.53,
+    "depth": 10.73,
+    "cinfo": 33.47,
+    "dinfo": 33.47
+  },
+  "frame_ids": {
+    "cinfo": [
+      "camera_optical_frame"
+    ],
+    "dinfo": [
+      "camera_optical_frame"
+    ],
+    "depth": [
+      "camera_optical_frame"
+    ],
+    "color": [
+      "camera_optical_frame"
+    ]
+  },
+  "meta": {
+    "cinfo": [
+      640,
+      480,
+      [
+        432.5,
+        0.0,
+        320.0,
+        0.0,
+        432.5,
+        240.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "dinfo": [
+      640,
+      480,
+      [
+        432.5,
+        0.0,
+        320.0,
+        0.0,
+        432.5,
+        240.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "depth": [
+      640,
+      480,
+      "32FC1"
+    ],
+    "color": [
+      640,
+      480,
+      "rgb8"
+    ]
+  },
+  "skew_ms": {
+    "median": 0.0,
+    "max": 152.00000000000102
+  },
+  "tf_map_to_camera": [
+    0.109,
+    0.035,
+    1.46
+  ],
+  "depth_sample": {
+    "valid_fraction": 0.765,
+    "min_m": 1.2,
+    "max_m": 11.87
+  },
+  "pass": true
+}

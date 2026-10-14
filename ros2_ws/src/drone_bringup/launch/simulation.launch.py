@@ -20,11 +20,13 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('vehicle', default_value='gz_x500_depth'),
         DeclareLaunchArgument('headless', default_value='false'),
+        DeclareLaunchArgument('world', default_value='', description='PX4_GZ_WORLD name, e.g. indoor_v1 (empty = PX4 default)'),
         DeclareLaunchArgument('rviz', default_value='true'),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(bringup, 'launch', 'sitl.launch.py')),
-            launch_arguments={'vehicle': LaunchConfiguration('vehicle'), 'headless': LaunchConfiguration('headless')}.items()),
+            launch_arguments={'vehicle': LaunchConfiguration('vehicle'), 'headless': LaunchConfiguration('headless'),
+                              'world': LaunchConfiguration('world')}.items()),
         # give PX4 + agent a few seconds before the bridge starts streaming
         TimerAction(period=5.0, actions=[
             Node(package='px4_bridge', executable='px4_bridge_node', name='px4_bridge', output='screen',

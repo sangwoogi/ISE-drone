@@ -60,6 +60,7 @@ PX4 버전이 바뀌면 **이 파일만** 수정한다. `px4_msgs`를 import하�
 자세: `q_enu_flu = q_NED→ENU · q_px4(FRD→NED) · q_FLU→FRD`, `q_NED→ENU = (w0, x√½, y√½, z0)`, `q_FLU→FRD = (0,1,0,0)`; 결과는 (x,y,z,w)로 발행.
 
 Phase 1의 위치 기준은 PX4 local origin(시뮬레이션 시작점)이다. TF(`map/odom/base_link`)는 Phase 2~3에서 정의한다.
+카메라 정적 TF(Phase 3): base_link → camera_link = (0.132, 0.0, 0.261) m, camera_link → camera_optical_frame = RPY(−π/2, 0, −π/2).
 
 ## 4. Mission API (영구 계약)
 
@@ -103,7 +104,9 @@ Phase 2에서 bridge 노드/RViz를 추가한다.
 |---|---|---|---|---|
 | `/camera/color/image_raw` | sensor_msgs/Image | sensor_adapter | detector, SLAM | frame `camera_optical_frame`, sensor QoS |
 | `/camera/depth/image_raw` | sensor_msgs/Image | sensor_adapter | mapper, SLAM | 32FC1 m 또는 16UC1 mm |
-| `/camera/color/camera_info` | sensor_msgs/CameraInfo | sensor_adapter | mapper, SLAM | |
+| `/camera/color/camera_info` | sensor_msgs/CameraInfo | sensor_adapter | mapper, SLAM | x500_rgbd: 640×480, fx=fy=432.5, cx=320, cy=240 |
+| `/camera/depth/camera_info` | sensor_msgs/CameraInfo | sensor_adapter | mapper | 시뮬레이션에서는 컬러 info 재발행(정합 RGB-D) |
+| `/camera/depth/points` | sensor_msgs/PointCloud2 | ros_gz_bridge | RViz | 선택 |
 | `/sensor_adapter/skew_ms` | std_msgs/Float32 | sensor_adapter | 평가 | depth−color 타임스탬프 차 |
 | `/drone/vehicle_state` | drone_interfaces/VehicleState | px4_bridge | mission_manager, 평가 | 20 Hz, ENU, frame `odom` |
 | `/drone/pose` | geometry_msgs/PoseStamped | px4_bridge | RViz | 전체 자세(FLU→ENU 쿼터니언) |
@@ -142,3 +145,12 @@ map_gt (ground truth, 평가 전용, 트리에 연결하지 않음)
 `SemanticObject{id, class_name, position(map), size, confidence, first_seen, last_seen, observation_count, relations[]}`.
 `relations` 문자열 형식 `"<relation>:<object_id>"`, V1 relation = near / left_of / right_of / in_front_of / behind.
 SQLite 테이블: `objects`, `relations`, `observations` (`semantic_database/db.py`).
+
+## 7. 시뮬레이션 자산 (Phase 3)
+
+| 자산 | 위치 | 비고 |
+|---|---|---|
+| 기체 `gz_x500_rgbd` | `simulation/models/x500_rgbd`, `OakD-Lite-RGBD` | 컬러·깊이 640×480 @ 20 Hz, FOV 1.274; PX4 airframe 4002로 부팅 |
+| world `indoor_v1` | `simulation/worlds/indoor_v1.sdf` | Room A – 복도 – Room B, 가구 7(Fuel) + 원시도형 3 + 색 패널 7 |
+| GT | `simulation/worlds/indoor_v1_gt.json` | `tools/export_gt_objects.py`로 추출, **평가 전용** |
+| Gazebo 토픽 | `/rgb_camera`, `/depth_camera`, `/depth_camera/points`, `/camera_info`(두 센서 공용), `/clock` | `sensor_adapter/config/gz_bridge_x500_rgbd.yaml` |

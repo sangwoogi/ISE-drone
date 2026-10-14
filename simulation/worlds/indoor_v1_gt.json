@@ -1,0 +1,116 @@
+{
+  "world": "indoor_v1",
+  "frame": "map (Gazebo world frame)",
+  "objects": [
+    {
+      "id": "table_01",
+      "class": "dining table",
+      "model": "OpenRobotics/Table",
+      "position": [
+        1.5,
+        1.5,
+        0.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "chair_01",
+      "class": "chair",
+      "model": "OpenRobotics/Chair",
+      "position": [
+        1.5,
+        0.6,
+        -0.0
+      ],
+      "yaw": 1.5708
+    },
+    {
+      "id": "bookshelf_01",
+      "class": "book",
+      "model": "OpenRobotics/Bookshelf",
+      "position": [
+        -2.4,
+        1.6,
+        0.0
+      ],
+      "yaw": -1.5708
+    },
+    {
+      "id": "person_01",
+      "class": "person",
+      "model": "OpenRobotics/Standing person",
+      "position": [
+        -1.5,
+        -1.5,
+        -1e-06
+      ],
+      "yaw": 0.8
+    },
+    {
+      "id": "sofa_01",
+      "class": "couch",
+      "model": "OpenRobotics/Sofa",
+      "position": [
+        9.49983,
+        1.5499,
+        0.00012
+      ],
+      "yaw": -3.14138
+    },
+    {
+      "id": "chair_02",
+      "class": "chair",
+      "model": "OpenRobotics/OfficeChairBlack",
+      "position": [
+        10.5,
+        -0.8,
+        0.0
+      ],
+      "yaw": -2.0
+    },
+    {
+      "id": "table_02",
+      "class": "dining table",
+      "model": "OpenRobotics/BedsideTable",
+      "position": [
+        8.3,
+        -1.9,
+        0.00018
+      ],
+      "yaw": -0.0
+    },
+    {
+      "id": "box_red",
+      "class": "backpack",
+      "model": "primitive box",
+      "position": [
+        2.2,
+        -1.8,
+        0.25
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "bottle_blue",
+      "class": "bottle",
+      "model": "primitive cylinder",
+      "position": [
+        1.5,
+        1.5,
+        0.95
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "box_cardboard",
+      "class": "box",
+      "model": "primitive box",
+      "position": [
+        10.8,
+        -1.9,
+        0.3
+      ],
+      "yaw": 0.0
+    }
+  ]
+}

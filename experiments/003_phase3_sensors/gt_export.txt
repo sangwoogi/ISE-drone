@@ -1,0 +1,11 @@
+table_01       dining table  [1.5, 1.5, 0.0] yaw=0
+chair_01       chair         [1.5, 0.6, -0.0] yaw=90
+bookshelf_01   book          [-2.4, 1.6, 0.0] yaw=-90
+person_01      person        [-1.5, -1.5, -1e-06] yaw=46
+sofa_01        couch         [9.49983, 1.5499, 0.00012] yaw=-180
+chair_02       chair         [10.5, -0.8, 0.0] yaw=-115
+table_02       dining table  [8.3, -1.9, 0.00018] yaw=0
+box_red        backpack      [2.2, -1.8, 0.25] yaw=0
+bottle_blue    bottle        [1.5, 1.5, 0.95] yaw=0
+box_cardboard  box           [10.8, -1.9, 0.3] yaw=0
+written /home/user/workspace/ISE-drone/simulation/worlds/indoor_v1_gt.json

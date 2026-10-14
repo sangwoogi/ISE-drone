@@ -24,7 +24,8 @@ def generate_launch_description():
     stages = ['sensors', 'slam', 'detector', 'tracker', 'mapper', 'database', 'mission', 'llm', 'monitor', 'exploration']
     args = [DeclareLaunchArgument(f'enable_{s}', default_value='true') for s in stages]
     args += [
-        DeclareLaunchArgument('vehicle', default_value='gz_x500_depth'),
+        DeclareLaunchArgument('vehicle', default_value='gz_x500_rgbd'),
+        DeclareLaunchArgument('world', default_value='indoor_v1'),
         DeclareLaunchArgument('headless', default_value='false'),
         DeclareLaunchArgument('rviz', default_value='true'),
         DeclareLaunchArgument('detector_backend', default_value='ultralytics'),
@@ -35,7 +36,7 @@ def generate_launch_description():
     ]
     base = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(share('drone_bringup', 'launch', 'simulation.launch.py')),
-        launch_arguments={'vehicle': lc('vehicle'), 'headless': lc('headless'), 'rviz': lc('rviz'),
+        launch_arguments={'vehicle': lc('vehicle'), 'headless': lc('headless'), 'rviz': lc('rviz'), 'world': lc('world'),
                           'static_map_odom': 'false', 'use_sim_time': lc('use_sim_time')}.items())
     sensors = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(share('sensor_adapter', 'launch', 'gazebo_sensors.launch.py')),

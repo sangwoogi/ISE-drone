@@ -1,0 +1,5 @@
+/camera_info
+/depth_camera
+/depth_camera/points
+/rgb_camera
+/x500_rgbd_0/command/motor_speed

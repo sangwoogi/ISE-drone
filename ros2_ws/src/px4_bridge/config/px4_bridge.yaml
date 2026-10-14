@@ -26,5 +26,5 @@
     # Timeouts [s]
     connection_timeout_s: 60.0
     arm_timeout_s: 15.0
-    goto_timeout_s: 60.0
+    goto_timeout_s: 120.0   # wall-clock; heavy worlds run at RTF ~0.3-0.7 in the GUI
     land_timeout_s: 60.0
