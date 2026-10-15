@@ -6,15 +6,15 @@ PX4 + Gazebo Harmonic + ROS 2 Jazzy 기반 실내 자율 Semantic Exploration �
 
 ## 현재 상태
 
-| Phase | 내용 | 상태 |
-|---|---|---|
-| 0 | 개발 환경 (Ubuntu 24.04 / ROS 2 Jazzy / Gazebo Harmonic / PX4 v1.17.0 / uXRCE-DDS) | **완료** — `experiments/000_phase0_env/` |
-| 1 | PX4 + Gazebo 비행: `takeoff / hover / goto / return_home / land`, 10회 연속 시퀀스 | **완료** (10/10, failsafe OK, gz_x500_depth OK) — `experiments/001_phase1_flight/` |
-| — | 전 Phase 베이스라인 골격 (계약·스텁 노드·launch, 전체 체인 스모크 통과) | **완료** — `docs/phases/baseline.md` |
-| 2 | ROS 2 bringup: 단일 launch(PX4·Gazebo·Agent·Bridge·RViz), FlightCommand 액션 5/5, cancel→hold, `/drone/odom` | **완료** — `experiments/002_phase2_bringup/` |
-| 3 | Sensor pipeline: 실내 world `indoor_v1`, 정합 RGB-D 모델 `x500_rgbd`, `/camera/*` 검증, rosbag 기록/재생, GT 추출 | **완료** — `experiments/003_phase3_sensors/` |
-| 4 | SLAM: RTAB-Map(RGB-D) + PX4 EKF odometry, ATE 0.075 m / lost 0 / 2D·3D 지도, VO 모드 실험 포함 | **완료** — `experiments/004_phase4_slam/` |
-| 5+ | YOLO, Semantic Map, LLM, Mission Manager (실구현) | 예정 |
+| Phase | 내용                                                                                                                    | 상태                                                                                        |
+| ----- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| 0     | 개발 환경 (Ubuntu 24.04 / ROS 2 Jazzy / Gazebo Harmonic / PX4 v1.17.0 / uXRCE-DDS)                                      | **완료** — `experiments/000_phase0_env/`                                           |
+| 1     | PX4 + Gazebo 비행: `takeoff / hover / goto / return_home / land`, 10회 연속 시퀀스                                    | **완료** (10/10, failsafe OK, gz_x500_depth OK) — `experiments/001_phase1_flight/` |
+| —    | 전 Phase 베이스라인 골격 (계약·스텁 노드·launch, 전체 체인 스모크 통과)                                               | **완료** — `docs/phases/baseline.md`                                               |
+| 2     | ROS 2 bringup: 단일 launch(PX4·Gazebo·Agent·Bridge·RViz), FlightCommand 액션 5/5, cancel→hold, `/drone/odom`     | **완료** — `experiments/002_phase2_bringup/`                                       |
+| 3     | Sensor pipeline: 실내 world `indoor_v1`, 정합 RGB-D 모델 `x500_rgbd`, `/camera/*` 검증, rosbag 기록/재생, GT 추출 | **완료** — `experiments/003_phase3_sensors/`                                       |
+| 4     | SLAM: RTAB-Map(RGB-D) + PX4 EKF odometry, ATE 0.075 m / lost 0 / 2D·3D 지도, VO 모드 실험 포함                         | **완료** — `experiments/004_phase4_slam/`                                          |
+| 5+    | YOLO, Semantic Map, LLM, Mission Manager (실구현)                                                                       | 예정                                                                                        |
 
 ## 저장소 구조
 
@@ -103,6 +103,7 @@ fc = create_controller()
 fc.takeoff(1.5); fc.hover(5.0)
 fc.goto(2.0, 0.0, 1.5); fc.return_home(); fc.land()
 ```
+
 ENU 좌표(m), yaw rad. NED 변환과 px4_msgs는 `px4_bridge` 내부에만 존재한다.
 
 ## 단위 테스트
